@@ -219,18 +219,6 @@ $(function(){
 		myPageSwiper.unlockSwipeToNext();
 		myPageSwiper.slideTo(3);
 	});
-	$('.btn-back-choose').on('click',function(){
-		myPageSwiper.unlockSwipeToNext();
-		if(myPageSwiper.previousIndex===4){
-			myPageSwiper.slideTo(4);
-		}else{
-			myPageSwiper.slideTo(3);
-		}
-	});
-	$('.btn-start-shake').on('click',function(){
-		myPageSwiper.unlockSwipeToNext();
-		myPageSwiper.slideTo(6);
-	});
 	$('.share-btn').on('click',function(){
 		$('.share-cover').show();
 	});
@@ -369,8 +357,11 @@ $(function(){
 
 	function worksVote(list){
 		this.list = list ? list : window.worksList;
+		this.submitBtn = $('.works-wrap .submitBtn');
 		this.listWraps = $('.works-wrap .works-list');
 		this.boardWrap = $('.leader-board');
+		this.checkedNum = 0;
+		this.activeNode;
 		this.setWorksList();
 	};
 	worksVote.prototype = {
@@ -392,10 +383,14 @@ $(function(){
 							var list_node = _.find(self.list, function(node){ return node.id == Number(item.id); });
 							var li = $('<li><div class="item rank">'+item.rowno+'</div><div class="item item-right"><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src='+list_node.img+' /></div></div><div class="text"><div class="name">名称: '+item.Name+'</div><div class="dis">加油量: '+item.vote+'ml</div></div></div></li>');
 							li.on('click',function(){
+								self.activeNode = li;
 								select_group.node = list_node;
 								myPageSwiper.unlockSwipeToNext();
 								myPageSwiper.slideTo(5);
 							});
+							if(index === 0){
+								self.activeNode = li;
+							}
 							li.appendTo(self.boardWrap);
 						});
 					}else{
@@ -419,19 +414,40 @@ $(function(){
 					if(data.status === 1){
 						var oilArr = _.union(data.company,data.personal);
 						var ind = 0;
+						var checkedNum = 0;
 						$(self.list).each(function(index,item){
 							item.vote = _.find(oilArr, function(node){ return Number(node.id) == item.id; }).vote;
 							if(item.group === select_group.group){
-								var li = $('<li><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="'+item.img+'" /></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
+								var li = $('<li><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="'+item.img+'" /></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
 								li.on('click',function(){
 									select_group.node = item;
 									myPageSwiper.unlockSwipeToNext();
 									myPageSwiper.slideTo(5);
 								});
+								li.find('.checkbox').on('click',function(){
+									if(li.hasClass('checked')){
+										li.removeClass('checked');
+										self.checkedNum--;
+									}else{
+										if(self.checkedNum<3){
+											li.addClass('checked');
+											self.checkedNum++;
+										}
+									}
+								});
 								li.appendTo(self.listWraps.eq(ind++%2));
 							}
 						});
 						self.setWorksNode();
+						self.submitBtn.on('click',function(){
+							self.checkedNum = self.list.find('li.checked').length;
+							if(self.checkedNum === 3){
+								myPageSwiper.unlockSwipeToNext();
+								myPageSwiper.slideTo(6);
+							}else{
+								pop.alert('请选择3个队伍投票');
+							}
+						});
 					}
 				}
 			});
@@ -442,6 +458,29 @@ $(function(){
 			$('.works-node .node-id').text(node.id);
 			$('.works-node .node-dis').text(node.des);
 			$('.works-node .node-vote').text(node.vote);
+
+			$('.works-node .btn-back-choose').off('click').on('click',function(){
+				myPageSwiper.unlockSwipeToNext();
+				if(myPageSwiper.previousIndex===4){
+					myPageSwiper.slideTo(4);
+				}else{
+					myPageSwiper.slideTo(3);
+				}
+			});
+			$('.works-node .btn-start-shake').off('click').on('click',function(){
+				myPageSwiper.unlockSwipeToNext();
+				if(myPageSwiper.previousIndex===4){
+					myPageSwiper.slideTo(4);
+				}else{
+					myPageSwiper.slideTo(3);
+				}
+				if(self.checkedNum<3){
+					li.addClass('checked');
+					self.checkedNum++;
+				}else{
+					pop.alert('您的选择队伍已满3个');
+				}
+			});
 		},
 		setVote: function(){
 			shake_bl = false;

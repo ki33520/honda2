@@ -147,6 +147,8 @@ transform: scaleX(1) skew(-15deg);}
 .pd-list .img-wrap{ position: relative; height: 1.96875rem; width: 100%;}
 .pd-list .img-wrap .img{ height: 100%; width: 100%; overflow: hidden;}
 .pd-list .img-wrap .img img{ height: 100%; width: auto; margin-left: -0.2109375rem;}
+.pd-list li .checkbox{ position: absolute; right: 0; top: 0; width: 1rem; height: 1rem; background-image: url(../images/icon_checked.png); background-size: 100%; background-position: left top;}
+.pd-list li.checked .checkbox{ background-position: left bottom;}
 .pd-list li .number{ background:rgba(240,11,11,0.6); width: 1.146875rem; height: 0.484375rem; position: absolute; left: 0; top: 0; z-index: 9; color: #fff; font-size: 0.3rem; line-height: 0.484375rem; text-align: center;}
 .pd-list li .img-cover{ background-image: url(../images/img_cover.png); background-repeat: no-repeat; background-size: 100%; width: 100%; height: 100%; position: absolute; left: 0; top: 0; background-position: left top;}
 .pd-list li .name{ color: #fff; font-size: 0.3rem; line-height: 120%; padding-top: 0.05rem;}
@@ -207,7 +209,8 @@ transform: scaleX(1) skew(-15deg);}
 .share-cover .rule-light-2{ position: absolute; bottom: auto; top: 4.309375rem; left: 1.06rem; width: 1.34375rem; height: 0.078125rem;}
 
 
-
-
+.rotate{ width: 1rem; height: 1rem; background-color: #fff; background-image: url(../images/works_1.png); background-position: center center; left: 50%; top: 30%; margin-left: -0.5rem; margin-top: -0.5rem;}
+.rotate2{ width: 2rem; height: 2rem; margin-left: -1rem; margin-top: -1rem; top: 50%;}
+.rotate3{ width: 3rem; height: 3rem; margin-left: -1.5rem; margin-top: -1.5rem; top: 70%;}
 
 
