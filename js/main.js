@@ -304,7 +304,9 @@ $(function(){
 	pop.wrap.appendTo('body');
 	/* data */
 	var ajaxUrl = 'http://hide.dzhcn.cn/honda/callback.php',
-		boardType = 'Leaderboard1',
+		smsType = 'getSmsCode',
+		submitType = 'submit'
+		boardType = 'Leaderboard2',
 		voteType = "Vote",
 		oilType = "Oil",
 		groupNames = ['personal','company'];
@@ -365,6 +367,52 @@ $(function(){
 		this.setWorksList();
 	};
 	worksVote.prototype = {
+		getSmsCode: function(){
+			var self = this;
+			var mobileNumber = $.trim($('#mobile').val());
+			if($.testMobile(mobileNumber)){
+				pop.alert('请输入正确的手机号码');
+				return false;
+			}else{
+				$.ajax({
+					url: ajaxUrl,
+					type: "post",
+					data: {type: smsType,mobile:mobileNumber},
+					dataType: "json",
+					error: function(request){
+						console.log(request);
+					},
+					success: function(data){
+						if(data.status === 1){
+							self.mobileNumber = mobileNumber;
+							self.smsCode = data.code;
+							pop.alert('提交成功，请查看手机短信');
+						}else if(data.status === 2){
+							pop.alert('短信已发送，请60秒后再试');
+						}else{
+							pop.alert('提交失败');
+						}
+					}
+				});
+			}
+		},
+		submitVote: function(){
+			var mobileNumber = $.trim($('#mobile').val());
+			$.ajax({
+					url: ajaxUrl,
+					type: "post",
+					data: {type: submitType,mobile:mobileNumber},
+					dataType: "json",
+					error: function(request){
+						console.log(request);
+					},
+					success: function(data){
+						if(data.status === 1){
+							pop.alert('投票成功');
+						}
+					}
+				});
+		},
 		setLeaderBoard: function(){
 			var self = this;
 			$.ajax({
