@@ -504,10 +504,10 @@ $(function(){
 			$('.works-node .node-id').text(node.id);
 			$('.works-node .node-dis').text(node.des);
 			$('.works-node .node-vote').text(node.vote);
-			$('.works-node .node-img').off('click').on('click').function(event){
+			$('.works-node .node-img').off('click').on('click',function(event){
 				pop.show($('<div class="img-wrap"><img src="'+node.img+'" /></div>'));
 				event.stopPropagation();
-			}
+			})
 			$('.works-node .btn-back-choose').off('click').on('click',function(event){
 				myPageSwiper.unlockSwipeToNext();
 				if(myPageSwiper.previousIndex===4){
