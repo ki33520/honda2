@@ -290,15 +290,17 @@ $(function(){
 		},1000)
 	}
 	var pop = {
-		wrap: $('<div class="pop-alert"><div class="text"></div></div>'),
-		show: function(text){
-			this.wrap.show().find('.text').text(text);
+		wrap: $('<div class="pop-alert"></div>'),
+		show: function(html){
+			this.wrap.show().html(html);
 		},
 		alert: function(text){
-			this.wrap.fadeIn(500).delay(1000).fadeOut(500).find('.text').text(text);
+			this.wrap.fadeIn(500).delay(1000).fadeOut(500,function(){
+				$(this).empty();
+			}).html('<div class="text">'+text+'</div>');
 		},
 		hide: function(){
-			this.wrap.hide().find('.text').text('');
+			this.wrap.hide().empty();
 		}
 	}
 	pop.wrap.appendTo('body');
@@ -308,8 +310,7 @@ $(function(){
 		submitType = 'submit'
 		boardType = 'Leaderboard2',
 		voteType = "Vote",
-		oilType = "Oil",
-		groupNames = ['personal','company'];
+		oilType = "Oil2";
 
 	function voteFn(shake_num){
 		var shake_num = shake_num ? shake_num : 1;
@@ -345,15 +346,7 @@ $(function(){
 
 	function selectGroup(){
 		var self = this;
-		this.group = 1;
-		this.name = groupNames[0];
 		this.node = window.worksList[0];
-		$('.type-btn').each(function(index,item){
-			$(item).on('click',function(){
-				self.group = index+1;
-				self.name = groupNames[index];
-			});
-		})
 	}
 	var select_group = new selectGroup();
 
@@ -409,6 +402,10 @@ $(function(){
 					success: function(data){
 						if(data.status === 1){
 							pop.alert('投票成功');
+						}else if(data.status === 2){
+							pop.alert('手机号当天已参与过活动了');
+						}else{
+							pop.alert('投票失败');
 						}
 					}
 				});
@@ -425,7 +422,7 @@ $(function(){
 				},
 				success: function(data){
 					if(data.status === 1){
-						var list_data = data[select_group.name];
+						var list_data = data.data;
 						self.boardWrap.empty();
 						$(list_data).each(function(index,item){
 							var list_node = _.find(self.list, function(node){ return node.id == Number(item.id); });
@@ -460,31 +457,32 @@ $(function(){
 				},
 				success: function(data){
 					if(data.status === 1){
-						var oilArr = _.union(data.company,data.personal);
+						var oilArr = data.data;
 						var ind = 0;
 						var checkedNum = 0;
 						$(self.list).each(function(index,item){
 							item.vote = _.find(oilArr, function(node){ return Number(node.id) == item.id; }).vote;
-							if(item.group === select_group.group){
-								var li = $('<li><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="'+item.img+'" /></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
-								li.on('click',function(){
-									select_group.node = item;
-									myPageSwiper.unlockSwipeToNext();
-									myPageSwiper.slideTo(5);
-								});
-								li.find('.checkbox').on('click',function(){
-									if(li.hasClass('checked')){
-										li.removeClass('checked');
-										self.checkedNum--;
-									}else{
-										if(self.checkedNum<3){
-											li.addClass('checked');
-											self.checkedNum++;
-										}
+							var li = $('<li><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="'+item.img+'" /></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
+							li.on('click',function(event){
+								select_group.node = item;
+								myPageSwiper.unlockSwipeToNext();
+								myPageSwiper.slideTo(5);
+								event.stopPropagation();
+							});
+							li.find('.checkbox').on('click',function(event){
+								if(li.hasClass('checked')){
+									li.removeClass('checked');
+									self.checkedNum--;
+								}else{
+									if(self.checkedNum<3){
+										li.addClass('checked');
+										self.checkedNum++;
 									}
-								});
-								li.appendTo(self.listWraps.eq(ind++%2));
-							}
+								}
+								event.stopPropagation();
+							});
+							li.appendTo(self.listWraps.eq(ind++%2));
+							
 						});
 						self.setWorksNode();
 						self.submitBtn.on('click',function(){
@@ -506,16 +504,20 @@ $(function(){
 			$('.works-node .node-id').text(node.id);
 			$('.works-node .node-dis').text(node.des);
 			$('.works-node .node-vote').text(node.vote);
-
-			$('.works-node .btn-back-choose').off('click').on('click',function(){
+			$('.works-node .node-img').off('click').on('click').function(event){
+				pop.show($('<div class="img-wrap"><img src="'+node.img+'" /></div>'));
+				event.stopPropagation();
+			}
+			$('.works-node .btn-back-choose').off('click').on('click',function(event){
 				myPageSwiper.unlockSwipeToNext();
 				if(myPageSwiper.previousIndex===4){
 					myPageSwiper.slideTo(4);
 				}else{
 					myPageSwiper.slideTo(3);
 				}
+				event.stopPropagation();
 			});
-			$('.works-node .btn-start-shake').off('click').on('click',function(){
+			$('.works-node .btn-start-shake').off('click').on('click',function(event){
 				myPageSwiper.unlockSwipeToNext();
 				if(myPageSwiper.previousIndex===4){
 					myPageSwiper.slideTo(4);
@@ -528,6 +530,7 @@ $(function(){
 				}else{
 					pop.alert('您的选择队伍已满3个');
 				}
+				event.stopPropagation();
 			});
 		},
 		setVote: function(){
