@@ -352,7 +352,7 @@ $(function(){
 
 	function worksVote(list){
 		this.list = list ? list : window.worksList;
-		this.submitBtn = $('.works-wrap .submitBtn');
+		this.submitBtn = $('.works-wrap .btn-submit');
 		this.listWraps = $('.works-wrap .works-list');
 		this.boardWrap = $('.leader-board');
 		this.checkedNum = 0;
@@ -446,7 +446,7 @@ $(function(){
 		},
 		setWorksList: function(){
 			var self = this;
-			self.listWraps.empty();
+			//self.listWraps.empty();
 			$.ajax({
 				url: ajaxUrl,
 				type: "post",
@@ -485,16 +485,16 @@ $(function(){
 							
 						});
 						self.setWorksNode();
-						self.submitBtn.on('click',function(){
-							self.checkedNum = self.list.find('li.checked').length;
-							if(self.checkedNum === 3){
-								myPageSwiper.unlockSwipeToNext();
-								myPageSwiper.slideTo(6);
-							}else{
-								pop.alert('请选择3个队伍投票');
-							}
-						});
 					}
+				}
+			});
+			self.submitBtn.on('click',function(){
+				self.checkedNum = self.list.find('li.checked').length;
+				if(self.checkedNum === 3){
+					myPageSwiper.unlockSwipeToNext();
+					myPageSwiper.slideTo(6);
+				}else{
+					pop.alert('请选择3个队伍投票');
 				}
 			});
 		},
