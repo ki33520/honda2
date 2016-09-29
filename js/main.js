@@ -123,16 +123,16 @@ $(function(){
 			},
 			onSlideChangeStart: function(e) {
 				$('.page').find('.animate').hide();
-				if(e.activeIndex === 3){
+				if(e.activeIndex === 2){
 					works_vote.setWorksList();
 				}
-				if(e.activeIndex === 4){
+				if(e.activeIndex === 3){
 					works_vote.setLeaderBoard();
 				}
-				if(e.activeIndex === 5){
+				if(e.activeIndex === 4){
 					works_vote.setWorksNode();
 				}
-				if(e.activeIndex === 6){
+				if(e.activeIndex === 5){
 					works_vote.setVote();
 				}
 			},
@@ -153,8 +153,6 @@ $(function(){
 				if(e.activeIndex === 2 || e.activeIndex === 3 || e.activeIndex === 4 || e.activeIndex === 5 || e.activeIndex === 6){
 					$("#musicBox")[0].play();
 				}
-				
-				startShake(e.activeIndex);
 				
 				$('.page').eq(curPage).find('.scroll-container').each(function(){
 					new Swiper(this,{
@@ -213,11 +211,11 @@ $(function(){
 	});
 	$('.leader-board li').on('click',function(){
 		myPageSwiper.unlockSwipeToNext();
-		myPageSwiper.slideTo(5);
+		myPageSwiper.slideTo(4);
 	});
 	$('.btn-back-list').on('click',function(){
 		myPageSwiper.unlockSwipeToNext();
-		myPageSwiper.slideTo(3);
+		myPageSwiper.slideTo(2);
 	});
 	$('.share-btn').on('click',function(){
 		$('.share-cover').show();
@@ -230,72 +228,18 @@ $(function(){
 		myPageSwiper.swipeTo(0);
 	});
 
-	var SHAKE_THRESHOLD = 3000;
-	var last_update = 0;
-	var shake_bl = false;
-	var x = y = z = last_x = last_y = last_z = shake_num = 0;
-	function startShake(ind){
-		if (window.DeviceMotionEvent) {
-			if(ind===6){
-				window.addEventListener('devicemotion', deviceMotionHandler);
-			}else{
-				window.removeEventListener('devicemotion', deviceMotionHandler);
-			}
-		} else {
-			alert('not support mobile event');
-		}
-	}
-	function deviceMotionHandler(eventData) {
-		var acceleration = eventData.accelerationIncludingGravity;
-		var curTime = new Date().getTime();
-		if ((curTime - last_update) > 100) {
-			var diffTime = curTime - last_update;
-			last_update = curTime;
-			x = acceleration.x;
-			y = acceleration.y;
-			z = acceleration.z;
-			var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000; 
-			if (speed > SHAKE_THRESHOLD) {
-				shake_num++;
-				if(!shake_bl){
-					shake_bl = true;
-					$('.status-1').hide();
-					$('.status-2').show();
-					countNumber(10);
-				}
-			}
-			last_x = x;
-			last_y = y;
-			last_z = z;
-		}
-	}
-	$('.status-1').on('click',function(){
-		if(!shake_bl){
-			shake_bl = true;
-			$('.status-1').hide();
-			$('.status-2').show();
-			countNumber(10);
-		}
-	});
 
-	function countNumber(num){
-		$('.status-2 .number').text(num);
-		setTimeout(function(){
-			$('.status-2 .number').text(--num);
-			if(num>0){
-				countNumber(num);
-			}else{
-				voteFn(shake_num)
-			}
-		},1000)
-	}
 	var pop = {
 		wrap: $('<div class="pop-alert"></div>'),
 		show: function(html){
+			var self = this;
 			this.wrap.show().html(html);
+			this.wrap.on('click',function(){
+				self.hide();
+			})
 		},
 		alert: function(text){
-			this.wrap.fadeIn(500).delay(1000).fadeOut(500,function(){
+			this.wrap.show().delay(1000).fadeOut(10,function(){
 				$(this).empty();
 			}).html('<div class="text">'+text+'</div>');
 		},
@@ -338,8 +282,6 @@ $(function(){
 					pop.alert('投票失败');
 				}
 				$('.shake-vote').removeClass('roll-animate');
-				$('.status').hide();
-				$('.status-3').show();
 			}
 		});
 	}
@@ -352,7 +294,7 @@ $(function(){
 
 	function worksVote(list){
 		this.list = list ? list : window.worksList;
-		this.submitBtn = $('.works-wrap .btn-submit');
+		this.submitBtn = $('.btn-submit');
 		this.listWraps = $('.works-wrap .works-list');
 		this.boardWrap = $('.leader-board');
 		this.checkedNum = 0;
@@ -363,10 +305,8 @@ $(function(){
 		getSmsCode: function(){
 			var self = this;
 			var mobileNumber = $.trim($('#mobile').val());
+			console.log($.testMobile(mobileNumber))
 			if($.testMobile(mobileNumber)){
-				pop.alert('请输入正确的手机号码');
-				return false;
-			}else{
 				$.ajax({
 					url: ajaxUrl,
 					type: "post",
@@ -387,6 +327,9 @@ $(function(){
 						}
 					}
 				});
+			}else{
+				pop.alert('请输入正确的手机号码');
+				return false;
 			}
 		},
 		submitVote: function(){
@@ -425,13 +368,13 @@ $(function(){
 						var list_data = data.data;
 						self.boardWrap.empty();
 						$(list_data).each(function(index,item){
-							var list_node = _.find(self.list, function(node){ return node.id == Number(item.id); });
+							var list_node = _.find(self.list, function(node){ return node.name == item.Name; });
 							var li = $('<li><div class="item rank">'+item.rowno+'</div><div class="item item-right"><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src='+list_node.img+' /></div></div><div class="text"><div class="name">名称: '+item.Name+'</div><div class="dis">加油量: '+item.vote+'ml</div></div></div></li>');
 							li.on('click',function(){
 								self.activeNode = li;
 								select_group.node = list_node;
 								myPageSwiper.unlockSwipeToNext();
-								myPageSwiper.slideTo(5);
+								myPageSwiper.slideTo(4);
 							});
 							if(index === 0){
 								self.activeNode = li;
@@ -462,11 +405,11 @@ $(function(){
 						var checkedNum = 0;
 						$(self.list).each(function(index,item){
 							item.vote = _.find(oilArr, function(node){ return Number(node.id) == item.id; }).vote;
-							var li = $('<li><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="'+item.img+'" /></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
+							var li = $('<li data-name="'+item.name+'"><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="'+item.img+'" /></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
 							li.on('click',function(event){
 								select_group.node = item;
 								myPageSwiper.unlockSwipeToNext();
-								myPageSwiper.slideTo(5);
+								myPageSwiper.slideTo(4);
 								event.stopPropagation();
 							});
 							li.find('.checkbox').on('click',function(event){
@@ -488,44 +431,43 @@ $(function(){
 					}
 				}
 			});
-			self.submitBtn.on('click',function(){
-				self.checkedNum = self.list.find('li.checked').length;
+			self.submitBtn.off('click').on('click',function(){
+				self.checkedNum = self.listWraps.find('li.checked').length;
+				console.log(self.checkedNum)
 				if(self.checkedNum === 3){
 					myPageSwiper.unlockSwipeToNext();
-					myPageSwiper.slideTo(6);
+					myPageSwiper.slideTo(5);
 				}else{
 					pop.alert('请选择3个队伍投票');
 				}
 			});
 		},
 		setWorksNode: function(){
+			var self = this;
 			var node = select_group.node;
 			$('.works-node .node-img').attr('src',node.img);
 			$('.works-node .node-id').text(node.id);
 			$('.works-node .node-dis').text(node.des);
 			$('.works-node .node-vote').text(node.vote);
-			$('.works-node .node-img').off('click').on('click',function(event){
+			$('.works-node .pd-img').off('click').on('click',function(event){
+				console.log(pop.show)
 				pop.show($('<div class="img-wrap"><img src="'+node.img+'" /></div>'));
 				event.stopPropagation();
 			})
-			$('.works-node .btn-back-choose').off('click').on('click',function(event){
+			$('.btn-back-choose').off('click').on('click',function(event){
 				myPageSwiper.unlockSwipeToNext();
-				if(myPageSwiper.previousIndex===4){
-					myPageSwiper.slideTo(4);
-				}else{
+				if(myPageSwiper.previousIndex===3){
 					myPageSwiper.slideTo(3);
+				}else{
+					myPageSwiper.slideTo(2);
 				}
 				event.stopPropagation();
 			});
-			$('.works-node .btn-start-shake').off('click').on('click',function(event){
+			$('.btn-start-vote').off('click').on('click',function(event){
 				myPageSwiper.unlockSwipeToNext();
-				if(myPageSwiper.previousIndex===4){
-					myPageSwiper.slideTo(4);
-				}else{
-					myPageSwiper.slideTo(3);
-				}
+				myPageSwiper.slideTo(2);
 				if(self.checkedNum<3){
-					li.addClass('checked');
+					self.listWraps.find('li:[data-name="'+node.name+'"]').addClass('checked');
 					self.checkedNum++;
 				}else{
 					pop.alert('您的选择队伍已满3个');
@@ -534,9 +476,15 @@ $(function(){
 			});
 		},
 		setVote: function(){
-			shake_bl = false;
-			$('.status').hide();
-			$('.status-1').show();
+			var self = this;
+			$('.pd-list-3').html(self.listWraps.find('li.checked'));
+			$('.btn_getsms').off('click').on('click',function(){
+				self.getSmsCode();
+			});
+			$('.btn-start-shake').off('click').on('click',function(){
+				myPageSwiper.unlockSwipeToNext();
+				myPageSwiper.slideTo(6);
+			});
 		}
 	}
 	var works_vote = new worksVote(window.worksList);
