@@ -22,10 +22,24 @@ $.extend({
 		var myReg = /^(1(([35][0-9])|(47)|[8][0123456789]))\d{8}$/;
 		return($.testAct(str,myReg));
 	},
+	testsmsNumber: function(str){
+		var myReg = /^[0-9]{6}$/;
+		return($.testAct(str,myReg));
+	},
 	QueryString: function(str){
 		var sValue=location.search.match(new RegExp("[\?\&]"+str+"=([^\&]*)(\&?)","i"));
 		return sValue?sValue[1]:sValue;
 	}
+});
+var appId = "";
+$.ajax({
+    url:'http://sovita.dzhcn.cn/wechat_api/get_jssdk.php',
+    type:'get',
+    dataType:'jsonp',
+    data:{url:"http://hide.dzhcn.cn/honda/phase2/index.html"},
+    success:function(data){
+        appId = data.appId;
+    }
 });
 var manifest = ["images/logo.png"];
 $("img").each(function(){
@@ -124,7 +138,7 @@ $(function(){
 			onSlideChangeStart: function(e) {
 				$('.page').find('.animate').hide();
 				if(e.activeIndex === 2){
-					works_vote.setWorksList();
+					//works_vote.setWorksList();
 				}
 				if(e.activeIndex === 3){
 					works_vote.setLeaderBoard();
@@ -228,6 +242,8 @@ $(function(){
 		myPageSwiper.swipeTo(0);
 	});
 
+	
+
 
 	var pop = {
 		wrap: $('<div class="pop-alert"></div>'),
@@ -299,13 +315,14 @@ $(function(){
 		this.boardWrap = $('.leader-board');
 		this.checkedNum = 0;
 		this.activeNode;
+		this.selectNode = [];
 		this.setWorksList();
 	};
 	worksVote.prototype = {
 		getSmsCode: function(){
 			var self = this;
 			var mobileNumber = $.trim($('#mobile').val());
-			console.log($.testMobile(mobileNumber))
+			var smsNumber = $.trim($('#sms').val());
 			if($.testMobile(mobileNumber)){
 				$.ajax({
 					url: ajaxUrl,
@@ -333,11 +350,23 @@ $(function(){
 			}
 		},
 		submitVote: function(){
+			var self = this;
 			var mobileNumber = $.trim($('#mobile').val());
-			$.ajax({
+			var smsNumber = $.trim($('#sms').val());
+			var worksID = '';
+			self.listWraps.find('li.checked').each(function(index,item){
+				if(index===0){
+					worksID = worksID + $(item).data('id');
+				}else{
+					worksID = worksID + '|'+ $(item).data('id');
+				}
+			});
+			console.log(worksID,self.listWraps.find('li.checked'))
+			if($.testMobile(mobileNumber) && $.testsmsNumber(smsNumber)){
+				$.ajax({
 					url: ajaxUrl,
 					type: "post",
-					data: {type: submitType,mobile:mobileNumber},
+					data: {type: submitType,mobile:mobileNumber,openid:appId,worksID:worksID,smsCode:smsNumber},
 					dataType: "json",
 					error: function(request){
 						console.log(request);
@@ -345,6 +374,9 @@ $(function(){
 					success: function(data){
 						if(data.status === 1){
 							pop.alert('投票成功');
+							$('.ss_code').text(data.usercode);
+							myPageSwiper.unlockSwipeToNext();
+							myPageSwiper.slideTo(6);
 						}else if(data.status === 2){
 							pop.alert('手机号当天已参与过活动了');
 						}else{
@@ -352,6 +384,9 @@ $(function(){
 						}
 					}
 				});
+			}else{
+				pop.alert('请填写手机号码和验证码');
+			}
 		},
 		setLeaderBoard: function(){
 			var self = this;
@@ -389,7 +424,8 @@ $(function(){
 		},
 		setWorksList: function(){
 			var self = this;
-			//self.listWraps.empty();
+			this.checkedNum = 0;
+			self.listWraps.empty();
 			$.ajax({
 				url: ajaxUrl,
 				type: "post",
@@ -405,7 +441,7 @@ $(function(){
 						var checkedNum = 0;
 						$(self.list).each(function(index,item){
 							item.vote = _.find(oilArr, function(node){ return Number(node.id) == item.id; }).vote;
-							var li = $('<li data-name="'+item.name+'"><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="'+item.img+'" /></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
+							var li = $('<li data-id="'+item.id+'" data-name="'+item.name+'"><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="'+item.img+'" /></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
 							li.on('click',function(event){
 								select_group.node = item;
 								myPageSwiper.unlockSwipeToNext();
@@ -433,7 +469,6 @@ $(function(){
 			});
 			self.submitBtn.off('click').on('click',function(){
 				self.checkedNum = self.listWraps.find('li.checked').length;
-				console.log(self.checkedNum)
 				if(self.checkedNum === 3){
 					myPageSwiper.unlockSwipeToNext();
 					myPageSwiper.slideTo(5);
@@ -464,11 +499,11 @@ $(function(){
 				event.stopPropagation();
 			});
 			$('.btn-start-vote').off('click').on('click',function(event){
-				myPageSwiper.unlockSwipeToNext();
-				myPageSwiper.slideTo(2);
 				if(self.checkedNum<3){
 					self.listWraps.find('li:[data-name="'+node.name+'"]').addClass('checked');
 					self.checkedNum++;
+					myPageSwiper.unlockSwipeToNext();
+					myPageSwiper.slideTo(2);
 				}else{
 					pop.alert('您的选择队伍已满3个');
 				}
@@ -477,13 +512,12 @@ $(function(){
 		},
 		setVote: function(){
 			var self = this;
-			$('.pd-list-3').html(self.listWraps.find('li.checked'));
+			$('.pd-list-3').html(self.listWraps.find('li.checked').clone());
 			$('.btn_getsms').off('click').on('click',function(){
 				self.getSmsCode();
 			});
 			$('.btn-start-shake').off('click').on('click',function(){
-				myPageSwiper.unlockSwipeToNext();
-				myPageSwiper.slideTo(6);
+				self.submitVote();
 			});
 		}
 	}
