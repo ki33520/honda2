@@ -22,11 +22,108 @@ $.extend({
 		var myReg = /^(1(([35][0-9])|(47)|[8][0123456789]))\d{8}$/;
 		return($.testAct(str,myReg));
 	},
+	testsmsNumber: function(str){
+		var myReg = /^[0-9]{6}$/;
+		return($.testAct(str,myReg));
+	},
 	QueryString: function(str){
 		var sValue=location.search.match(new RegExp("[\?\&]"+str+"=([^\&]*)(\&?)","i"));
 		return sValue?sValue[1]:sValue;
 	}
 });
+var appId,timestamp,nonceStr,signature,
+	voiceStatus = true,
+	ajaxUrl = 'http://hide.dzhcn.cn/honda/callback.php',
+	smsType = 'getSmsCode',
+	submitType = 'submit'
+	boardType = 'Leaderboard2',
+	voteType = "Vote",
+	oilType = "Oil2";
+
+var link = document.URL.split("#")[0];
+$.ajax({
+	url:'http://sovita.dzhcn.cn/wechat_api/get_jssdk.php',
+	type:'get',
+	dataType:'jsonp',
+	data:{url:link},
+	success:function(data){
+		console.log(data)
+		timestamp=data.timestamp;
+		nonceStr=data.nonceStr;
+		signature=data.signature;
+		appId = data.appId;
+	}
+});
+function weixinShare(){
+	wx.config({
+		debug: true,
+		appId: appId,
+		timestamp: timestamp,
+		nonceStr: nonceStr,
+		signature: signature,
+		jsApiList: [
+			'onMenuShareTimeline',
+			'onMenuShareAppMessage',
+			'onMenuShareQQ'
+		]
+	});
+	wx.ready(function () {
+		wx.onMenuShareTimeline({
+			title: '你好你好',
+			desc: '测试测试',
+			link: link,
+			imgUrl: shareImg,
+			success: function () {
+				alert('分享成功');
+				wx.hideOptionMenu();
+			},
+			cancel: function () {
+				alert('取消分享');
+				wx.hideOptionMenu();
+			}
+		});
+		wx.onMenuShareAppMessage({
+			title: '你好你好',
+			desc: '测试测试',
+			link: link,
+			imgUrl: shareImg,
+			success: function () {
+				alert('分享成功');
+				wx.hideOptionMenu();
+			},
+			cancel: function () {
+				alert('取消分享');
+				wx.hideOptionMenu();
+			}
+		});
+		wx.onMenuShareQQ({
+			title: '你好你好',
+			desc: '测试测试',
+			link: link,
+			imgUrl: shareImg,
+			success: function () {
+				alert('分享成功');
+				wx.hideOptionMenu();
+			},
+			cancel: function () {
+				alert('取消分享');
+				wx.hideOptionMenu();
+			}
+		});
+	});
+}
+
+function loadAudio(){
+	$('.audio').each(function(){
+		$(this)[0].load();
+	})
+}
+function playAudio(string){
+	$(string)[0].play();
+}
+function audioOff(string){
+	$(string)[0].pause();
+}
 var manifest = ["images/logo.png"];
 $("img").each(function(){
 	manifest.push($(this).attr('src'));
@@ -75,13 +172,13 @@ var lightFlash = function(itm,ind){
 			setTimeout(function(){
 				$(itm).find('.light').fadeOut(100);
 				lightFlash(itm,ind)
-			},1000)
+			},100)
 		}else{
 			$(itm).find('.light').eq(ind).fadeIn(200);
 			ind++;
 			lightFlash(itm,ind)
 		}
-	},1000);
+	},500);
 }
 $('.lights').each(function(index,item){
 	lightFlash(item,0);
@@ -123,21 +220,21 @@ $(function(){
 			},
 			onSlideChangeStart: function(e) {
 				$('.page').find('.animate').hide();
-				if(e.activeIndex === 3){
-					works_vote.setWorksList();
+				if(e.activeIndex === 2){
+					//works_vote.setWorksList();
 				}
-				if(e.activeIndex === 4){
+				if(e.activeIndex === 3){
 					works_vote.setLeaderBoard();
 				}
-				if(e.activeIndex === 5){
+				if(e.activeIndex === 4){
 					works_vote.setWorksNode();
 				}
-				if(e.activeIndex === 6){
+				if(e.activeIndex === 5){
 					works_vote.setVote();
 				}
 			},
 			onSlideChangeEnd: function(e) {
-				$('.row-rule').hide();
+				$('.row-rule').hide().prev('.row').find('.slide_btn').show();
 				if(e.activeIndex == (e.slides.length-1)){
 					$('.slide_btn').hide();
 				}else{
@@ -151,21 +248,40 @@ $(function(){
 					e.lockSwipeToNext();
 				}
 				if(e.activeIndex === 2 || e.activeIndex === 3 || e.activeIndex === 4 || e.activeIndex === 5 || e.activeIndex === 6){
-					$("#musicBox")[0].play();
+					setTimeout(function(){
+						playAudio('#impact');
+					},1000)
+					playAudio('#gear');
 				}
 				
-				startShake(e.activeIndex);
-				
-				$('.page').eq(curPage).find('.scroll-container').each(function(){
-					new Swiper(this,{
-						scrollbar: '.swiper-scrollbar',
-						scrollbarHide: false,
-						direction: 'vertical',
-						slidesPerView: 'auto',
-						mousewheelControl: true,
-						freeMode: true
+				if(e.activeIndex === 2){
+					works_vote.listAjax.complete(function(){
+						$('.works-wrap .scroll-container').each(function(){
+							new Swiper(this,{
+								scrollbar: $(this).find('.swiper-scrollbar'),
+								scrollbarHide: false,
+								direction: 'vertical',
+								slidesPerView: 'auto',
+								mousewheelControl: true,
+								freeMode: true
+							});
+						});
 					});
-				});
+				}
+				if(e.activeIndex === 3){
+					works_vote.boardAjax.complete(function(){
+						$('.leader-board-wrap .scroll-container').each(function(){
+							new Swiper(this,{
+								scrollbar: $(this).find('.swiper-scrollbar'),
+								scrollbarHide: false,
+								direction: 'vertical',
+								slidesPerView: 'auto',
+								mousewheelControl: true,
+								freeMode: true
+							});
+						});
+					});
+				}
 			},
 			onSlidePrevEnd: function(swiper, event) {
 				
@@ -174,7 +290,7 @@ $(function(){
 			},
 			onTouchEnd: function(swiper, event) {
 				if(swiper.touches.diff<0 && swiper.activeIndex == 1){
-					$('.row-rule').show();
+					$('.row-rule').show().prev('.row').find('.slide_btn').hide();
 				}
 			}
 		});
@@ -183,10 +299,14 @@ $(function(){
 
 	window.addEventListener('touchstart', touchstartHandler);
 	function touchstartHandler(){
-		if(!($("#musicBox").hasClass('loaded'))){
-			$("#musicBox").addClass('loaded');
-			$("#musicBox")[0].load();
+		if(!($('.audio').hasClass('loaded'))){
+			$('.audio').addClass('loaded');
+			loadAudio();
+			if(voiceStatus){
+				playAudio('#bgm');
+			}
 		}
+
 	}
 	$('.rule-btn').on('click',function(){
 		$('.masker').fadeIn();
@@ -197,7 +317,7 @@ $(function(){
 		$('.rules').fadeOut();
 	});
 	$('.btn-back').on('click',function(){
-		$('.row-rule').hide();
+		$('.row-rule').hide().prev('.row').find('.slide_btn').show();;
 	});
 	$('.btn-confirm').on('click',function(){
 		myPageSwiper.unlockSwipeToNext();
@@ -206,6 +326,10 @@ $(function(){
 	$('.type-btn').on('click',function(){
 		myPageSwiper.unlockSwipeToNext();
 		myPageSwiper.slideNext();
+		playAudio('#button');
+	});
+	$('.sound-btn').on('click',function(){
+		playAudio('#button');
 	});
 	$('.rank-btn').on('click',function(){
 		myPageSwiper.unlockSwipeToNext();
@@ -213,11 +337,11 @@ $(function(){
 	});
 	$('.leader-board li').on('click',function(){
 		myPageSwiper.unlockSwipeToNext();
-		myPageSwiper.slideTo(5);
+		myPageSwiper.slideTo(4);
 	});
 	$('.btn-back-list').on('click',function(){
 		myPageSwiper.unlockSwipeToNext();
-		myPageSwiper.slideTo(3);
+		myPageSwiper.slideTo(2);
 	});
 	$('.share-btn').on('click',function(){
 		$('.share-cover').show();
@@ -230,72 +354,31 @@ $(function(){
 		myPageSwiper.swipeTo(0);
 	});
 
-	var SHAKE_THRESHOLD = 3000;
-	var last_update = 0;
-	var shake_bl = false;
-	var x = y = z = last_x = last_y = last_z = shake_num = 0;
-	function startShake(ind){
-		if (window.DeviceMotionEvent) {
-			if(ind===6){
-				window.addEventListener('devicemotion', deviceMotionHandler);
-			}else{
-				window.removeEventListener('devicemotion', deviceMotionHandler);
-			}
-		} else {
-			alert('not support mobile event');
-		}
-	}
-	function deviceMotionHandler(eventData) {
-		var acceleration = eventData.accelerationIncludingGravity;
-		var curTime = new Date().getTime();
-		if ((curTime - last_update) > 100) {
-			var diffTime = curTime - last_update;
-			last_update = curTime;
-			x = acceleration.x;
-			y = acceleration.y;
-			z = acceleration.z;
-			var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000; 
-			if (speed > SHAKE_THRESHOLD) {
-				shake_num++;
-				if(!shake_bl){
-					shake_bl = true;
-					$('.status-1').hide();
-					$('.status-2').show();
-					countNumber(10);
-				}
-			}
-			last_x = x;
-			last_y = y;
-			last_z = z;
-		}
-	}
-	$('.status-1').on('click',function(){
-		if(!shake_bl){
-			shake_bl = true;
-			$('.status-1').hide();
-			$('.status-2').show();
-			countNumber(10);
+	$('#btn-voice').on('touchstart',function(){
+		var status = $(this).hasClass('off') ? false : true;
+		if(status){
+			$(this).addClass('off');
+			voiceStatus = false;
+			audioOff('#bgm');
+		}else{
+			$(this).removeClass('off');
+			voiceStatus = true;
+			playAudio('#bgm');
 		}
 	});
 
-	function countNumber(num){
-		$('.status-2 .number').text(num);
-		setTimeout(function(){
-			$('.status-2 .number').text(--num);
-			if(num>0){
-				countNumber(num);
-			}else{
-				voteFn(shake_num)
-			}
-		},1000)
-	}
+
 	var pop = {
 		wrap: $('<div class="pop-alert"></div>'),
 		show: function(html){
+			var self = this;
 			this.wrap.show().html(html);
+			this.wrap.on('click',function(){
+				self.hide();
+			})
 		},
 		alert: function(text){
-			this.wrap.fadeIn(500).delay(1000).fadeOut(500,function(){
+			this.wrap.show().delay(1000).fadeOut(10,function(){
 				$(this).empty();
 			}).html('<div class="text">'+text+'</div>');
 		},
@@ -305,68 +388,23 @@ $(function(){
 	}
 	pop.wrap.appendTo('body');
 	/* data */
-	var ajaxUrl = 'http://hide.dzhcn.cn/honda/callback.php',
-		smsType = 'getSmsCode',
-		submitType = 'submit'
-		boardType = 'Leaderboard2',
-		voteType = "Vote",
-		oilType = "Oil2";
-
-	function voteFn(shake_num){
-		var shake_num = shake_num ? shake_num : 1;
-		var vote_num = shake_num*6 >200 ? 200 : shake_num*6;
-		var node = select_group.node;
-		$.ajax({
-			url: ajaxUrl,
-			type: "post",
-			data: {type: voteType,openid:'a',worksID:node.id,votes:vote_num,worksType:select_group.group},
-			dataType: "json",
-			error: function(request){
-				console.log(request);
-			},
-			success: function(data){
-				if(data.status === 1){
-					$('.status-3 .number').text(vote_num);
-				}else if(data.status === 2){
-					$('.status-3 .number').text(0);
-					pop.alert('当天已对投过作品');
-				}else if(data.status === 3){
-					$('.status-3 .number').text(0);
-					pop.alert('所投作品id与作品所属类');
-				}else if(data.status === 0){
-					$('.status-3 .number').text(0);
-					pop.alert('投票失败');
-				}
-				$('.shake-vote').removeClass('roll-animate');
-				$('.status').hide();
-				$('.status-3').show();
-			}
-		});
-	}
-
-	function selectGroup(){
-		var self = this;
-		this.node = window.worksList[0];
-	}
-	var select_group = new selectGroup();
 
 	function worksVote(list){
 		this.list = list ? list : window.worksList;
-		this.submitBtn = $('.works-wrap .submitBtn');
+		this.submitBtn = $('.btn-submit');
 		this.listWraps = $('.works-wrap .works-list');
 		this.boardWrap = $('.leader-board');
 		this.checkedNum = 0;
 		this.activeNode;
+		this.selectNode = [];
 		this.setWorksList();
 	};
 	worksVote.prototype = {
 		getSmsCode: function(){
 			var self = this;
 			var mobileNumber = $.trim($('#mobile').val());
+			var smsNumber = $.trim($('#sms').val());
 			if($.testMobile(mobileNumber)){
-				pop.alert('请输入正确的手机号码');
-				return false;
-			}else{
 				$.ajax({
 					url: ajaxUrl,
 					type: "post",
@@ -387,14 +425,28 @@ $(function(){
 						}
 					}
 				});
+			}else{
+				pop.alert('请输入正确的手机号码');
+				return false;
 			}
 		},
 		submitVote: function(){
+			var self = this;
 			var mobileNumber = $.trim($('#mobile').val());
-			$.ajax({
+			var smsNumber = $.trim($('#sms').val());
+			var worksID = '';
+			self.listWraps.find('li.checked').each(function(index,item){
+				if(index===0){
+					worksID = worksID + $(item).data('id');
+				}else{
+					worksID = worksID + '|'+ $(item).data('id');
+				}
+			});
+			if($.testMobile(mobileNumber) && $.testsmsNumber(smsNumber)){
+				$.ajax({
 					url: ajaxUrl,
 					type: "post",
-					data: {type: submitType,mobile:mobileNumber},
+					data: {type: submitType,mobile:mobileNumber,openid:appId,worksID:worksID,smsCode:smsNumber},
 					dataType: "json",
 					error: function(request){
 						console.log(request);
@@ -402,6 +454,9 @@ $(function(){
 					success: function(data){
 						if(data.status === 1){
 							pop.alert('投票成功');
+							$('.ss_code').text(data.usercode);
+							myPageSwiper.unlockSwipeToNext();
+							myPageSwiper.slideTo(6);
 						}else if(data.status === 2){
 							pop.alert('手机号当天已参与过活动了');
 						}else{
@@ -409,10 +464,13 @@ $(function(){
 						}
 					}
 				});
+			}else{
+				pop.alert('请填写手机号码和验证码');
+			}
 		},
 		setLeaderBoard: function(){
 			var self = this;
-			$.ajax({
+			this.boardAjax = $.ajax({
 				url: ajaxUrl,
 				type: "post",
 				data: {type: boardType},
@@ -425,16 +483,17 @@ $(function(){
 						var list_data = data.data;
 						self.boardWrap.empty();
 						$(list_data).each(function(index,item){
-							var list_node = _.find(self.list, function(node){ return node.id == Number(item.id); });
+							var list_node = _.find(self.list, function(node){ return node.name == item.Name; });
 							var li = $('<li><div class="item rank">'+item.rowno+'</div><div class="item item-right"><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src='+list_node.img+' /></div></div><div class="text"><div class="name">名称: '+item.Name+'</div><div class="dis">加油量: '+item.vote+'ml</div></div></div></li>');
 							li.on('click',function(){
-								self.activeNode = li;
-								select_group.node = list_node;
+								self.activeNode = list_node;
+								console.log(self.activeNode)
 								myPageSwiper.unlockSwipeToNext();
-								myPageSwiper.slideTo(5);
+								myPageSwiper.slideTo(4);
+								event.stopPropagation();
 							});
 							if(index === 0){
-								self.activeNode = li;
+								self.activeNode = list_node;
 							}
 							li.appendTo(self.boardWrap);
 						});
@@ -446,8 +505,9 @@ $(function(){
 		},
 		setWorksList: function(){
 			var self = this;
+			this.checkedNum = 0;
 			self.listWraps.empty();
-			$.ajax({
+			this.listAjax = $.ajax({
 				url: ajaxUrl,
 				type: "post",
 				data: {type: oilType},
@@ -459,16 +519,19 @@ $(function(){
 					if(data.status === 1){
 						var oilArr = data.data;
 						var ind = 0;
-						var checkedNum = 0;
 						$(self.list).each(function(index,item){
 							item.vote = _.find(oilArr, function(node){ return Number(node.id) == item.id; }).vote;
-							var li = $('<li><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="'+item.img+'" /></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
+							var li = $('<li data-id="'+item.id+'" data-name="'+item.name+'"><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="'+item.img+'" /></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
 							li.on('click',function(event){
-								select_group.node = item;
+								self.activeNode = item;
+								console.log(self.activeNode)
 								myPageSwiper.unlockSwipeToNext();
-								myPageSwiper.slideTo(5);
+								myPageSwiper.slideTo(4);
 								event.stopPropagation();
 							});
+							if(index===0){
+								self.activeNode = item;
+							}
 							li.find('.checkbox').on('click',function(event){
 								if(li.hasClass('checked')){
 									li.removeClass('checked');
@@ -485,48 +548,45 @@ $(function(){
 							
 						});
 						self.setWorksNode();
-						self.submitBtn.on('click',function(){
-							self.checkedNum = self.list.find('li.checked').length;
-							if(self.checkedNum === 3){
-								myPageSwiper.unlockSwipeToNext();
-								myPageSwiper.slideTo(6);
-							}else{
-								pop.alert('请选择3个队伍投票');
-							}
-						});
 					}
+				}
+			});
+			self.submitBtn.off('click').on('click',function(){
+				self.checkedNum = self.listWraps.find('li.checked').length;
+				if(self.checkedNum === 3){
+					myPageSwiper.unlockSwipeToNext();
+					myPageSwiper.slideTo(5);
+				}else{
+					pop.alert('请选择3个队伍投票');
 				}
 			});
 		},
 		setWorksNode: function(){
-			var node = select_group.node;
+			var self = this;
+			var node = self.activeNode ;
 			$('.works-node .node-img').attr('src',node.img);
 			$('.works-node .node-id').text(node.id);
 			$('.works-node .node-dis').text(node.des);
 			$('.works-node .node-vote').text(node.vote);
-			$('.works-node .node-img').off('click').on('click',function(event){
+			$('.works-node .pd-img').off('click').on('click',function(event){
 				pop.show($('<div class="img-wrap"><img src="'+node.img+'" /></div>'));
 				event.stopPropagation();
 			})
-			$('.works-node .btn-back-choose').off('click').on('click',function(event){
+			$('.btn-back-choose').off('click').on('click',function(event){
 				myPageSwiper.unlockSwipeToNext();
-				if(myPageSwiper.previousIndex===4){
-					myPageSwiper.slideTo(4);
-				}else{
+				if(myPageSwiper.previousIndex===3){
 					myPageSwiper.slideTo(3);
+				}else{
+					myPageSwiper.slideTo(2);
 				}
 				event.stopPropagation();
 			});
-			$('.works-node .btn-start-shake').off('click').on('click',function(event){
-				myPageSwiper.unlockSwipeToNext();
-				if(myPageSwiper.previousIndex===4){
-					myPageSwiper.slideTo(4);
-				}else{
-					myPageSwiper.slideTo(3);
-				}
+			$('.btn-start-vote').off('click').on('click',function(event){
 				if(self.checkedNum<3){
-					li.addClass('checked');
+					self.listWraps.find('li:[data-name="'+node.name+'"]').addClass('checked');
 					self.checkedNum++;
+					myPageSwiper.unlockSwipeToNext();
+					myPageSwiper.slideTo(2);
 				}else{
 					pop.alert('您的选择队伍已满3个');
 				}
@@ -534,9 +594,14 @@ $(function(){
 			});
 		},
 		setVote: function(){
-			shake_bl = false;
-			$('.status').hide();
-			$('.status-1').show();
+			var self = this;
+			$('.pd-list-3').html(self.listWraps.find('li.checked').clone());
+			$('.btn_getsms').off('click').on('click',function(){
+				self.getSmsCode();
+			});
+			$('.btn-start-shake').off('click').on('click',function(){
+				self.submitVote();
+			});
 		}
 	}
 	var works_vote = new worksVote(window.worksList);
