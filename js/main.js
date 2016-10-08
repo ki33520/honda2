@@ -33,25 +33,26 @@ $.extend({
 });
 var appId,timestamp,nonceStr,signature,
 	voiceStatus = true,
+	jssdkUrl = 'http://sovita.dzhcn.cn/wechat_api/get_jssdk.php',
 	ajaxUrl = 'http://hide.dzhcn.cn/honda/callback.php',
 	smsType = 'getSmsCode',
 	submitType = 'submit'
 	boardType = 'Leaderboard2',
 	voteType = "Vote",
-	oilType = "Oil2";
-
-var link = document.URL.split("#")[0];
+	oilType = "Oil2",
+	pageHref = window.location.origin+window.location.pathname;
 $.ajax({
-	url:'http://sovita.dzhcn.cn/wechat_api/get_jssdk.php',
+	url: jssdkUrl,
 	type:'get',
 	dataType:'jsonp',
-	data:{url:link},
+	data:{url:pageHref},
 	success:function(data){
 		console.log(data)
 		timestamp=data.timestamp;
 		nonceStr=data.nonceStr;
 		signature=data.signature;
 		appId = data.appId;
+		weixinShare();
 	}
 });
 function weixinShare(){
