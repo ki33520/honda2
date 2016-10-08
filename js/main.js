@@ -35,6 +35,7 @@ var appId,timestamp,nonceStr,signature,
 	voiceStatus = true,
 	jssdkUrl = 'http://sovita.dzhcn.cn/wechat_api/get_jssdk.php',
 	ajaxUrl = 'http://hide.dzhcn.cn/honda/callback.php',
+	shareImg = "http://hide.dzhcn.cn/honda/phase1/images/share_img.jpg",
 	smsType = 'getSmsCode',
 	submitType = 'submit'
 	boardType = 'Leaderboard2',
@@ -72,7 +73,7 @@ function weixinShare(){
 		wx.onMenuShareTimeline({
 			title: '你好你好',
 			desc: '测试测试',
-			link: link,
+			link: pageHref,
 			imgUrl: shareImg,
 			success: function () {
 				alert('分享成功');
@@ -86,7 +87,7 @@ function weixinShare(){
 		wx.onMenuShareAppMessage({
 			title: '你好你好',
 			desc: '测试测试',
-			link: link,
+			link: pageHref,
 			imgUrl: shareImg,
 			success: function () {
 				alert('分享成功');
@@ -100,7 +101,7 @@ function weixinShare(){
 		wx.onMenuShareQQ({
 			title: '你好你好',
 			desc: '测试测试',
-			link: link,
+			link: pageHref,
 			imgUrl: shareImg,
 			success: function () {
 				alert('分享成功');
