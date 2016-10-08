@@ -31,16 +31,99 @@ $.extend({
 		return sValue?sValue[1]:sValue;
 	}
 });
-var appId = "";
+var appId,timestamp,nonceStr,signature,
+	voiceStatus = true,
+	ajaxUrl = 'http://hide.dzhcn.cn/honda/callback.php',
+	smsType = 'getSmsCode',
+	submitType = 'submit'
+	boardType = 'Leaderboard2',
+	voteType = "Vote",
+	oilType = "Oil2";
+
+var link = document.URL.split("#")[0];
 $.ajax({
-    url:'http://sovita.dzhcn.cn/wechat_api/get_jssdk.php',
-    type:'get',
-    dataType:'jsonp',
-    data:{url:"http://hide.dzhcn.cn/honda/phase2/index.html"},
-    success:function(data){
-        appId = data.appId;
-    }
+	url:'http://sovita.dzhcn.cn/wechat_api/get_jssdk.php',
+	type:'get',
+	dataType:'jsonp',
+	data:{url:link},
+	success:function(data){
+		console.log(data)
+		timestamp=data.timestamp;
+		nonceStr=data.nonceStr;
+		signature=data.signature;
+		appId = data.appId;
+	}
 });
+function weixinShare(){
+	wx.config({
+		debug: true,
+		appId: appId,
+		timestamp: timestamp,
+		nonceStr: nonceStr,
+		signature: signature,
+		jsApiList: [
+			'onMenuShareTimeline',
+			'onMenuShareAppMessage',
+			'onMenuShareQQ'
+		]
+	});
+	wx.ready(function () {
+		wx.onMenuShareTimeline({
+			title: '你好你好',
+			desc: '测试测试',
+			link: link,
+			imgUrl: shareImg,
+			success: function () {
+				alert('分享成功');
+				wx.hideOptionMenu();
+			},
+			cancel: function () {
+				alert('取消分享');
+				wx.hideOptionMenu();
+			}
+		});
+		wx.onMenuShareAppMessage({
+			title: '你好你好',
+			desc: '测试测试',
+			link: link,
+			imgUrl: shareImg,
+			success: function () {
+				alert('分享成功');
+				wx.hideOptionMenu();
+			},
+			cancel: function () {
+				alert('取消分享');
+				wx.hideOptionMenu();
+			}
+		});
+		wx.onMenuShareQQ({
+			title: '你好你好',
+			desc: '测试测试',
+			link: link,
+			imgUrl: shareImg,
+			success: function () {
+				alert('分享成功');
+				wx.hideOptionMenu();
+			},
+			cancel: function () {
+				alert('取消分享');
+				wx.hideOptionMenu();
+			}
+		});
+	});
+}
+
+function loadAudio(){
+	$('.audio').each(function(){
+		$(this)[0].load();
+	})
+}
+function playAudio(string){
+	$(string)[0].play();
+}
+function audioOff(string){
+	$(string)[0].pause();
+}
 var manifest = ["images/logo.png"];
 $("img").each(function(){
 	manifest.push($(this).attr('src'));
@@ -89,13 +172,13 @@ var lightFlash = function(itm,ind){
 			setTimeout(function(){
 				$(itm).find('.light').fadeOut(100);
 				lightFlash(itm,ind)
-			},1000)
+			},100)
 		}else{
 			$(itm).find('.light').eq(ind).fadeIn(200);
 			ind++;
 			lightFlash(itm,ind)
 		}
-	},1000);
+	},500);
 }
 $('.lights').each(function(index,item){
 	lightFlash(item,0);
@@ -151,7 +234,7 @@ $(function(){
 				}
 			},
 			onSlideChangeEnd: function(e) {
-				$('.row-rule').hide();
+				$('.row-rule').hide().prev('.row').find('.slide_btn').show();
 				if(e.activeIndex == (e.slides.length-1)){
 					$('.slide_btn').hide();
 				}else{
@@ -165,19 +248,40 @@ $(function(){
 					e.lockSwipeToNext();
 				}
 				if(e.activeIndex === 2 || e.activeIndex === 3 || e.activeIndex === 4 || e.activeIndex === 5 || e.activeIndex === 6){
-					$("#musicBox")[0].play();
+					setTimeout(function(){
+						playAudio('#impact');
+					},1000)
+					playAudio('#gear');
 				}
 				
-				$('.page').eq(curPage).find('.scroll-container').each(function(){
-					new Swiper(this,{
-						scrollbar: '.swiper-scrollbar',
-						scrollbarHide: false,
-						direction: 'vertical',
-						slidesPerView: 'auto',
-						mousewheelControl: true,
-						freeMode: true
+				if(e.activeIndex === 2){
+					works_vote.listAjax.complete(function(){
+						$('.works-wrap .scroll-container').each(function(){
+							new Swiper(this,{
+								scrollbar: $(this).find('.swiper-scrollbar'),
+								scrollbarHide: false,
+								direction: 'vertical',
+								slidesPerView: 'auto',
+								mousewheelControl: true,
+								freeMode: true
+							});
+						});
 					});
-				});
+				}
+				if(e.activeIndex === 3){
+					works_vote.boardAjax.complete(function(){
+						$('.leader-board-wrap .scroll-container').each(function(){
+							new Swiper(this,{
+								scrollbar: $(this).find('.swiper-scrollbar'),
+								scrollbarHide: false,
+								direction: 'vertical',
+								slidesPerView: 'auto',
+								mousewheelControl: true,
+								freeMode: true
+							});
+						});
+					});
+				}
 			},
 			onSlidePrevEnd: function(swiper, event) {
 				
@@ -186,7 +290,7 @@ $(function(){
 			},
 			onTouchEnd: function(swiper, event) {
 				if(swiper.touches.diff<0 && swiper.activeIndex == 1){
-					$('.row-rule').show();
+					$('.row-rule').show().prev('.row').find('.slide_btn').hide();
 				}
 			}
 		});
@@ -195,10 +299,14 @@ $(function(){
 
 	window.addEventListener('touchstart', touchstartHandler);
 	function touchstartHandler(){
-		if(!($("#musicBox").hasClass('loaded'))){
-			$("#musicBox").addClass('loaded');
-			$("#musicBox")[0].load();
+		if(!($('.audio').hasClass('loaded'))){
+			$('.audio').addClass('loaded');
+			loadAudio();
+			if(voiceStatus){
+				playAudio('#bgm');
+			}
 		}
+
 	}
 	$('.rule-btn').on('click',function(){
 		$('.masker').fadeIn();
@@ -209,7 +317,7 @@ $(function(){
 		$('.rules').fadeOut();
 	});
 	$('.btn-back').on('click',function(){
-		$('.row-rule').hide();
+		$('.row-rule').hide().prev('.row').find('.slide_btn').show();;
 	});
 	$('.btn-confirm').on('click',function(){
 		myPageSwiper.unlockSwipeToNext();
@@ -218,6 +326,10 @@ $(function(){
 	$('.type-btn').on('click',function(){
 		myPageSwiper.unlockSwipeToNext();
 		myPageSwiper.slideNext();
+		playAudio('#button');
+	});
+	$('.sound-btn').on('click',function(){
+		playAudio('#button');
 	});
 	$('.rank-btn').on('click',function(){
 		myPageSwiper.unlockSwipeToNext();
@@ -242,7 +354,18 @@ $(function(){
 		myPageSwiper.swipeTo(0);
 	});
 
-	
+	$('#btn-voice').on('touchstart',function(){
+		var status = $(this).hasClass('off') ? false : true;
+		if(status){
+			$(this).addClass('off');
+			voiceStatus = false;
+			audioOff('#bgm');
+		}else{
+			$(this).removeClass('off');
+			voiceStatus = true;
+			playAudio('#bgm');
+		}
+	});
 
 
 	var pop = {
@@ -265,48 +388,6 @@ $(function(){
 	}
 	pop.wrap.appendTo('body');
 	/* data */
-	var ajaxUrl = 'http://hide.dzhcn.cn/honda/callback.php',
-		smsType = 'getSmsCode',
-		submitType = 'submit'
-		boardType = 'Leaderboard2',
-		voteType = "Vote",
-		oilType = "Oil2";
-
-	function voteFn(shake_num){
-		var shake_num = shake_num ? shake_num : 1;
-		var vote_num = shake_num*6 >200 ? 200 : shake_num*6;
-		var node = select_group.node;
-		$.ajax({
-			url: ajaxUrl,
-			type: "post",
-			data: {type: voteType,openid:'a',worksID:node.id,votes:vote_num,worksType:select_group.group},
-			dataType: "json",
-			error: function(request){
-				console.log(request);
-			},
-			success: function(data){
-				if(data.status === 1){
-					$('.status-3 .number').text(vote_num);
-				}else if(data.status === 2){
-					$('.status-3 .number').text(0);
-					pop.alert('当天已对投过作品');
-				}else if(data.status === 3){
-					$('.status-3 .number').text(0);
-					pop.alert('所投作品id与作品所属类');
-				}else if(data.status === 0){
-					$('.status-3 .number').text(0);
-					pop.alert('投票失败');
-				}
-				$('.shake-vote').removeClass('roll-animate');
-			}
-		});
-	}
-
-	function selectGroup(){
-		var self = this;
-		this.node = window.worksList[0];
-	}
-	var select_group = new selectGroup();
 
 	function worksVote(list){
 		this.list = list ? list : window.worksList;
@@ -361,7 +442,6 @@ $(function(){
 					worksID = worksID + '|'+ $(item).data('id');
 				}
 			});
-			console.log(worksID,self.listWraps.find('li.checked'))
 			if($.testMobile(mobileNumber) && $.testsmsNumber(smsNumber)){
 				$.ajax({
 					url: ajaxUrl,
@@ -390,7 +470,7 @@ $(function(){
 		},
 		setLeaderBoard: function(){
 			var self = this;
-			$.ajax({
+			this.boardAjax = $.ajax({
 				url: ajaxUrl,
 				type: "post",
 				data: {type: boardType},
@@ -406,13 +486,14 @@ $(function(){
 							var list_node = _.find(self.list, function(node){ return node.name == item.Name; });
 							var li = $('<li><div class="item rank">'+item.rowno+'</div><div class="item item-right"><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src='+list_node.img+' /></div></div><div class="text"><div class="name">名称: '+item.Name+'</div><div class="dis">加油量: '+item.vote+'ml</div></div></div></li>');
 							li.on('click',function(){
-								self.activeNode = li;
-								select_group.node = list_node;
+								self.activeNode = list_node;
+								console.log(self.activeNode)
 								myPageSwiper.unlockSwipeToNext();
 								myPageSwiper.slideTo(4);
+								event.stopPropagation();
 							});
 							if(index === 0){
-								self.activeNode = li;
+								self.activeNode = list_node;
 							}
 							li.appendTo(self.boardWrap);
 						});
@@ -426,7 +507,7 @@ $(function(){
 			var self = this;
 			this.checkedNum = 0;
 			self.listWraps.empty();
-			$.ajax({
+			this.listAjax = $.ajax({
 				url: ajaxUrl,
 				type: "post",
 				data: {type: oilType},
@@ -438,16 +519,19 @@ $(function(){
 					if(data.status === 1){
 						var oilArr = data.data;
 						var ind = 0;
-						var checkedNum = 0;
 						$(self.list).each(function(index,item){
 							item.vote = _.find(oilArr, function(node){ return Number(node.id) == item.id; }).vote;
 							var li = $('<li data-id="'+item.id+'" data-name="'+item.name+'"><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="'+item.img+'" /></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
 							li.on('click',function(event){
-								select_group.node = item;
+								self.activeNode = item;
+								console.log(self.activeNode)
 								myPageSwiper.unlockSwipeToNext();
 								myPageSwiper.slideTo(4);
 								event.stopPropagation();
 							});
+							if(index===0){
+								self.activeNode = item;
+							}
 							li.find('.checkbox').on('click',function(event){
 								if(li.hasClass('checked')){
 									li.removeClass('checked');
@@ -479,13 +563,12 @@ $(function(){
 		},
 		setWorksNode: function(){
 			var self = this;
-			var node = select_group.node;
+			var node = self.activeNode ;
 			$('.works-node .node-img').attr('src',node.img);
 			$('.works-node .node-id').text(node.id);
 			$('.works-node .node-dis').text(node.des);
 			$('.works-node .node-vote').text(node.vote);
 			$('.works-node .pd-img').off('click').on('click',function(event){
-				console.log(pop.show)
 				pop.show($('<div class="img-wrap"><img src="'+node.img+'" /></div>'));
 				event.stopPropagation();
 			})
