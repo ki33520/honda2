@@ -446,7 +446,7 @@ $(function(){
 				$.ajax({
 					url: ajaxUrl,
 					type: "post",
-					data: {type: submitType,mobile:mobileNumber,openid:appId,worksID:worksID,smsCode:smsNumber},
+					data: {type: submitType,mobile:mobileNumber,openid:$.QueryString('openid'),worksID:worksID,smsCode:smsNumber},
 					dataType: "json",
 					error: function(request){
 						console.log(request);
