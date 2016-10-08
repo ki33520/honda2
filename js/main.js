@@ -72,7 +72,7 @@ function weixinShare(){
 		wx.onMenuShareTimeline({
 			title: '你好你好',
 			desc: '测试测试',
-			link: link,
+			link: pageHref,
 			imgUrl: shareImg,
 			success: function () {
 				alert('分享成功');
@@ -86,7 +86,7 @@ function weixinShare(){
 		wx.onMenuShareAppMessage({
 			title: '你好你好',
 			desc: '测试测试',
-			link: link,
+			link: pageHref,
 			imgUrl: shareImg,
 			success: function () {
 				alert('分享成功');
@@ -100,7 +100,7 @@ function weixinShare(){
 		wx.onMenuShareQQ({
 			title: '你好你好',
 			desc: '测试测试',
-			link: link,
+			link: pageHref,
 			imgUrl: shareImg,
 			success: function () {
 				alert('分享成功');
