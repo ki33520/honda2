@@ -35,6 +35,7 @@ var appId,timestamp,nonceStr,signature,
 	voiceStatus = true,
 	jssdkUrl = 'http://sovita.dzhcn.cn/wechat_api/get_jssdk.php',
 	ajaxUrl = 'http://hide.dzhcn.cn/honda/callback.php',
+	shareImg = "http://hide.dzhcn.cn/honda/phase1/images/share_img.jpg",
 	smsType = 'getSmsCode',
 	submitType = 'submit'
 	boardType = 'Leaderboard2',
