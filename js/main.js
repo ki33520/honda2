@@ -254,6 +254,8 @@ $(function(){
 						playAudio('#impact');
 					},1000)
 					playAudio('#gear');
+				}else{
+					audioOff('#gear');
 				}
 				
 				if(e.activeIndex === 2){
@@ -303,7 +305,6 @@ $(function(){
 	function touchstartHandler(){
 		if(!($('.audio').hasClass('loaded'))){
 			$('.audio').addClass('loaded');
-			loadAudio();
 			if(voiceStatus){
 				playAudio('#bgm');
 			}
@@ -397,7 +398,7 @@ $(function(){
 		this.listWraps = $('.works-wrap .works-list');
 		this.boardWrap = $('.leader-board');
 		this.checkedNum = 0;
-		this.activeNode;
+		this.activeNode = this.list[0];
 		this.selectNode = [];
 		this.setWorksList();
 	};
@@ -486,7 +487,8 @@ $(function(){
 						self.boardWrap.empty();
 						$(list_data).each(function(index,item){
 							var list_node = _.find(self.list, function(node){ return node.name == item.Name; });
-							var li = $('<li><div class="item rank">'+item.rowno+'</div><div class="item item-right"><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src='+list_node.img+' /></div></div><div class="text"><div class="name">名称: '+item.Name+'</div><div class="dis">加油量: '+item.vote+'ml</div></div></div></li>');
+							var img = list_node && list_node.img ? list_node.img : '';
+							var li = $('<li><div class="item rank">'+item.rowno+'</div><div class="item item-right"><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src='+img+' /></div></div><div class="text"><div class="name">名称: '+item.Name+'</div><div class="dis">加油量: '+item.vote+'ml</div></div></div></li>');
 							li.on('click',function(){
 								self.activeNode = list_node;
 								console.log(self.activeNode)
