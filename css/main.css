@@ -154,8 +154,8 @@ transform: scaleX(1) skew(-15deg);}
 .page-board .row-level-9{ width: 3.375rem; height: 3.703125rem; top: 12.03125rem; right: 0.234375rem;}
 .page-board .row-level-10{ width: 10.34375rem; top: 0.78125rem; left: 0.25rem;}
 .page-board .row-level-10 .rank-btn{ position: absolute; left: 4.375rem; top: 2.5rem; width: 2.265625rem;}
-.page-board .row-level-10 .btn-submit{ width: 2rem; position: absolute; top: 11.9rem; left: 4.6875rem;}
-.page-board .scroll-wrap{ left: 2.109375rem; top: 3.21875rem; height: 8.55rem;}
+.page-board .row-level-10 .btn-submit{ width: 2rem; position: absolute; top: 11.9rem; left: 4.6rem;}
+.page-board .scroll-wrap{ left: 2.219375rem; top: 3.21875rem; height: 8.55rem;}
 .page-board .rule-light-1{ left: 7.45rem; top: 0.264rem;}
 .page-board .rule-light-2{ bottom: 0.79rem; left: 2.41rem; width: 2.06rem;}
 
