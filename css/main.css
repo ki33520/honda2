@@ -69,9 +69,9 @@ transform: scaleX(1) skew(-15deg);}
 .btn-voice .img-wrap{ width: 0.5rem; height: 0.4375rem; margin: 0 auto; overflow: hidden;}
 .btn-voice img{ margin-top: 0;}
 .btn-voice.off img{ margin-top: -0.4375rem;}
-.lights .light{ float: left; display: none;}
+.lights .light{ float: left; opacity: 0; -webkit-animation-duration: 0.2s; animation-duration: 0.2s;}
 .rule-light-1 .lights{ }
-.rule-light-1 .lights .light{ width: 0.171875rem; height: 0.15625rem; background: url(../images/icon_light_1.png) no-repeat left top; background-size: 100%; margin-left: -0.015625rem;}
+.rule-light-1 .lights .light{ width: 0.15625rem; height: 0.15625rem; background: url(../images/icon_light_1.png) no-repeat left top; background-size: cover;}
 
 .pop-alert{ position: absolute; color: #fff; z-index: 999; border-radius: 0.1rem; height: 100%; width: 100%; display: none;}
 .pop-alert .text{ position: absolute; width: 5rem; height: 1rem; left: 50%; top: 50%; margin-top: -0.6rem; margin-left: -2.7rem; font-size: 0.3rem; line-height: 150%; padding: .2rem; background: rgba(0,0,0,0.75); display: flex; justify-content: center; align-items:center;}
@@ -246,7 +246,7 @@ transform: scaleX(1) skew(-15deg);}
 .share-cover .tl-light{ left: 0.64rem; top: 0.595rem;}
 .share-cover .tl-light .light{ width: 0.495rem;}
 .share-cover .rule-light-1{ left: 4.23rem; top: 0.03rem; position: absolute;}
-.share-cover .rule-light-1 .light{ width: 0.12rem; height: 0.11rem; margin-left: -0.015625rem;}
+.share-cover .rule-light-1 .light{ width: 0.11rem; height: 0.11rem;}
 .share-cover .rule-light-2{ position: absolute; bottom: auto; top: 4.309375rem; left: 1.06rem; width: 1.34375rem; height: 0.078125rem;}
 .share-cover .tr-light{ transform: rotate(90deg); left: 5rem; top: 1rem; width: 1rem;}
 .share-cover .tr-light .light{ width: 0.24rem;}

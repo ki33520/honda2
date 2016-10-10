@@ -33,9 +33,9 @@ $.extend({
 });
 var appId,timestamp,nonceStr,signature,
 	voiceStatus = true,
+	indexUrl = 'http://hide.dzhcn.cn/honda/',
 	jssdkUrl = 'http://sovita.dzhcn.cn/wechat_api/get_jssdk.php',
-	ajaxUrl = 'http://hide.dzhcn.cn/honda/callback.php',
-	shareImg = "http://hide.dzhcn.cn/honda/phase1/images/share_img.jpg",
+	ajaxUrl = indexUrl+'callback.php',
 	smsType = 'getSmsCode',
 	submitType = 'submit'
 	boardType = 'Leaderboard2',
@@ -69,47 +69,38 @@ function weixinShare(){
 			'onMenuShareQQ'
 		]
 	});
+	var shareTitle = '选出你的节能科技之星',
+		shareDesc = '2016第十届Honda中国节能竞技大赛最佳设计奖评选',
+		shareImg = indexUrl+"phase2/images/share_img.jpg";
 	wx.ready(function () {
 		wx.onMenuShareTimeline({
-			title: '你好你好',
-			desc: '测试测试',
+			title: shareTitle,
+			desc: shareDesc,
 			link: pageHref,
 			imgUrl: shareImg,
 			success: function () {
-				alert('分享成功');
-				wx.hideOptionMenu();
 			},
 			cancel: function () {
-				alert('取消分享');
-				wx.hideOptionMenu();
 			}
 		});
 		wx.onMenuShareAppMessage({
-			title: '你好你好',
-			desc: '测试测试',
+			title: shareTitle,
+			desc: shareDesc,
 			link: pageHref,
 			imgUrl: shareImg,
 			success: function () {
-				alert('分享成功');
-				wx.hideOptionMenu();
 			},
 			cancel: function () {
-				alert('取消分享');
-				wx.hideOptionMenu();
 			}
 		});
 		wx.onMenuShareQQ({
-			title: '你好你好',
-			desc: '测试测试',
+			title: shareTitle,
+			desc: shareDesc,
 			link: pageHref,
 			imgUrl: shareImg,
 			success: function () {
-				alert('分享成功');
-				wx.hideOptionMenu();
 			},
 			cancel: function () {
-				alert('取消分享');
-				wx.hideOptionMenu();
 			}
 		});
 	});
@@ -172,11 +163,11 @@ var lightFlash = function(itm,ind){
 		if(ind>=$(itm).find('.light').length){
 			ind=0;
 			setTimeout(function(){
-				$(itm).find('.light').fadeOut(100);
+				$(itm).find('.light').removeClass("fadeIn animated");
 				lightFlash(itm,ind)
 			},100)
 		}else{
-			$(itm).find('.light').eq(ind).fadeIn(200);
+			$(itm).find('.light').eq(ind).addClass("fadeIn animated");
 			ind++;
 			lightFlash(itm,ind)
 		}
