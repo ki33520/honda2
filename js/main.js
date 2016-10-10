@@ -241,9 +241,15 @@ $(function(){
 					e.lockSwipeToNext();
 				}
 				if(e.activeIndex === 2 || e.activeIndex === 3 || e.activeIndex === 4 || e.activeIndex === 5 || e.activeIndex === 6){
-					setTimeout(function(){
-						playAudio('#impact');
-					},1000)
+					if(e.activeIndex===4){
+						setTimeout(function(){
+							playAudio('#impact');
+						},400)
+					}else{
+						setTimeout(function(){
+							playAudio('#impact');
+						},800)
+					}
 					playAudio('#gear');
 				}else{
 					audioOff('#gear');
@@ -294,8 +300,9 @@ $(function(){
 
 	window.addEventListener('touchstart', touchstartHandler);
 	function touchstartHandler(){
-		if(!($('.audio').hasClass('loaded'))){
-			$('.audio').addClass('loaded');
+		if(!($('#bgm').hasClass('loaded'))){
+			$('#bgm').addClass('loaded');
+			loadAudio();
 			if(voiceStatus){
 				playAudio('#bgm');
 			}
