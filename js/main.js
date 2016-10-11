@@ -41,7 +41,7 @@ var appId,timestamp,nonceStr,signature,
 	boardType = 'Leaderboard2',
 	voteType = "Vote",
 	oilType = "Oil2",
-	pageHref = window.location.origin+window.location.pathname;
+	pageHref = document.URL.split("#")[0];
 $.ajax({
 	url: jssdkUrl,
 	type:'get',
@@ -58,7 +58,7 @@ $.ajax({
 });
 function weixinShare(){
 	wx.config({
-		debug: true,
+		debug: false,
 		appId: appId,
 		timestamp: timestamp,
 		nonceStr: nonceStr,
@@ -71,12 +71,13 @@ function weixinShare(){
 	});
 	var shareTitle = '选出你的节能科技之星',
 		shareDesc = '2016第十届Honda中国节能竞技大赛最佳设计奖评选',
+		shareLink = window.location.origin+window.location.pathname,
 		shareImg = indexUrl+"phase2/images/share_img.jpg";
 	wx.ready(function () {
 		wx.onMenuShareTimeline({
 			title: shareTitle,
 			desc: shareDesc,
-			link: pageHref,
+			link: shareLink,
 			imgUrl: shareImg,
 			success: function () {
 			},
@@ -86,7 +87,7 @@ function weixinShare(){
 		wx.onMenuShareAppMessage({
 			title: shareTitle,
 			desc: shareDesc,
-			link: pageHref,
+			link: shareLink,
 			imgUrl: shareImg,
 			success: function () {
 			},
@@ -96,7 +97,7 @@ function weixinShare(){
 		wx.onMenuShareQQ({
 			title: shareTitle,
 			desc: shareDesc,
-			link: pageHref,
+			link: shareLink,
 			imgUrl: shareImg,
 			success: function () {
 			},
