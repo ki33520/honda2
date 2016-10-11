@@ -86,7 +86,7 @@ transform: scaleX(1) skew(-15deg);}
 .pd-list li .checkbox{ position: absolute; right: 0; top: 0; width: .8rem; height: .8rem; z-index: 9;}
 .pd-list li .checkbox .icon{ width: 0.40625rem; height: 0.40625rem; position: absolute; top: 0.125rem; right: 0.28125rem; background-image: url(../images/icon_checkbox.png); background-size: 100%; background-position: left top;}
 .pd-list li.checked .checkbox .icon{ background-position: left bottom;}
-.pd-list li .number{ background:rgba(240,11,11,0.6); width: 1.2rem; height: 0.484375rem; position: absolute; left: 0; top: 0; z-index: 9; color: #fff; font-size: 0.3rem; line-height: 0.484375rem; text-align: center;}
+.pd-list li .number{ background:rgba(240,11,11,0.6); width: 1.2rem; height: 0.484375rem; position: absolute; left: 0; top: 0; z-index: 9; color: #fff; font-size: 0.26rem; line-height: 0.484375rem; text-align: center;}
 .pd-list li .img-cover{ background-image: url(../images/img_cover.png); background-repeat: no-repeat; background-size: 100%; width: 100%; height: 100%; position: absolute; left: 0; top: 0; background-position: left top;}
 .pd-list li .name{ color: #fff; font-size: 0.3rem; line-height: 120%; padding-top: 0.05rem;}
 .pd-list li .dis{ color: #fff; font-size: 0.3rem; line-height: 120%;}
