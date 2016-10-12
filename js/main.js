@@ -33,9 +33,9 @@ $.extend({
 });
 var appId,timestamp,nonceStr,signature,
 	voiceStatus = true,
-	indexUrl = 'http://hide.dzhcn.cn/honda/',
+	indexUrl = 'http://honda10emc.dzhcn.cn/design/',
 	jssdkUrl = 'http://sovita.dzhcn.cn/wechat_api/get_jssdk.php',
-	ajaxUrl = indexUrl+'callback.php',
+	ajaxUrl = 'http://honda10emc.dzhcn.cn/callback.php',
 	smsType = 'getSmsCode',
 	submitType = 'submit'
 	boardType = 'Leaderboard2',
