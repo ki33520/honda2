@@ -22,6 +22,9 @@
 	<title>Honda</title>
 </head>
 <body>
+
+	<div id="tips"><img src="images/tip.png"></div>
+
 	<div class="page-container">
 		<div class="masker stop-swiping"></div>
 		<div class="rules rule-wrap stop-swiping">
@@ -416,5 +419,31 @@
 	<script type="text/javascript" src="js/data.js"></script>
 	<script type="text/javascript" src="js/underscore.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
+
+	<script type="text/javascript">
+
+		console.log(window.orientation)
+
+		function orientationChange(){ 
+			switch(window.orientation) { 
+				case 0:
+					$("#tips").hide();
+					break; 
+				case 180: // Upside-down Portrait 
+					$("#tips").hide();
+					break; 
+					
+				case -90: // Landscape: turned 90 degrees counter-clockwise 
+					$("#tips").show();
+					break; 
+				case 90: // Landscape: turned 90 degrees clockwise 
+					$("#tips").show();
+					break; 
+			} 
+		} 
+		window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", orientationChange, false);
+
+	</script>
+
 </body>
 </html>

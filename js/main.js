@@ -72,7 +72,7 @@ function weixinShare(){
 	var shareTitle = '选出你的节能科技之星',
 		shareDesc = '2016第十届Honda中国节能竞技大赛最佳设计奖评选',
 		shareLink = window.location.origin+window.location.pathname,
-		shareImg = indexUrl+"phase2/images/share_img.jpg";
+		shareImg = indexUrl+"images/share_img.jpg";
 	wx.ready(function () {
 		wx.onMenuShareTimeline({
 			title: shareTitle,
