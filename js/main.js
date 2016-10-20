@@ -455,6 +455,7 @@ $(function(){
 					},
 					success: function(data){
 						if(data.status === 1){
+							trackEvent('form','submit');
 							pop.alert('投票成功');
 							$('.ss_code').text(data.usercode);
 							myPageSwiper.unlockSwipeToNext();
@@ -485,18 +486,17 @@ $(function(){
 						var list_data = data.data;
 						self.boardWrap.empty();
 						$(list_data).each(function(index,item){
-							var list_node = _.find(self.list, function(node){ return node.name == item.Name; });
-							var img = list_node && list_node.img ? list_node.img : '';
-							var li = $('<li><div class="item rank">'+item.rowno+'</div><div class="item item-right"><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src='+img+' /></div></div><div class="text"><div class="name">名称: '+item.Name+'</div><div class="dis">加油量: '+item.vote+'ml</div></div></div></li>');
+							var li = $('<li><div class="item rank">'+item.rowno+'</div><div class="item item-right"><div class="img-wrap"><div class="img-cover"></div><div class="img" style="background-image:url(images/'+item.id+'.jpg)"></div></div><div class="text"><div class="name">名称: '+item.Name+'</div><div class="dis">加油量: '+item.vote+'ml</div></div></div></li>');
 							li.on('click',function(){
-								self.activeNode = list_node;
+								self.activeNode = item;
 								console.log(self.activeNode)
 								myPageSwiper.unlockSwipeToNext();
 								myPageSwiper.slideTo(4);
+								trackEvent('list','d',item.id);
 								event.stopPropagation();
 							});
 							if(index === 0){
-								self.activeNode = list_node;
+								self.activeNode = item;
 							}
 							li.appendTo(self.boardWrap);
 						});
@@ -522,14 +522,13 @@ $(function(){
 					if(data.status === 1){
 						var oilArr = data.data;
 						var ind = 0;
-						$(self.list).each(function(index,item){
-							item.vote = _.find(oilArr, function(node){ return Number(node.id) == item.id; }).vote;
-							var li = $('<li data-id="'+item.id+'" data-name="'+item.name+'"><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="'+item.img+'" /></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
+						$(oilArr).each(function(index,item){
+							var li = $('<li data-id="'+item.id+'" data-name="'+item.name+'"><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img" style="background-image:url(images/'+item.id+'.jpg)"></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
 							li.on('click',function(event){
 								self.activeNode = item;
-								console.log(self.activeNode)
 								myPageSwiper.unlockSwipeToNext();
 								myPageSwiper.slideTo(4);
+								trackEvent('list','d',item.id);
 								event.stopPropagation();
 							});
 							if(index===0){
@@ -567,12 +566,12 @@ $(function(){
 		setWorksNode: function(){
 			var self = this;
 			var node = self.activeNode ;
-			$('.works-node .node-img').attr('src',node.img);
+			$('.works-node .node-img').css('backgroundImage','url(images/'+node.id+'.jpg)');
 			$('.works-node .node-id').text(node.id);
 			$('.works-node .node-dis').text(node.des);
 			$('.works-node .node-vote').text(node.vote);
 			$('.works-node .pd-img').off('click').on('click',function(event){
-				pop.show($('<div class="img-wrap"><img src="'+node.img+'" /></div>'));
+				pop.show($('<div class="img-wrap"><img src="images/'+node.id+'.jpg" /></div>'));
 				event.stopPropagation();
 			})
 			$('.btn-back-choose').off('click').on('click',function(event){
@@ -590,6 +589,7 @@ $(function(){
 					self.checkedNum++;
 					myPageSwiper.unlockSwipeToNext();
 					myPageSwiper.slideTo(2);
+					trackEvent('detail','vote',node.id);
 				}else{
 					pop.alert('您的选择队伍已满3个');
 				}

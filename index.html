@@ -279,7 +279,7 @@
 							<div class="works-node">
 								<div class="pd-img">
 									<div class="img-cover img2-cover"><img src="images/img2_cover.png" /></div>
-									<div class="img"><img class="node-img" src="images/works_1.jpg" /></div>
+									<div class="img node-img"></div>
 								</div>
 								<div class="dis"><span class="node-dis">群英聚会，比学赶帮，争创一流； 相互学习，加强交流，共同提高。</span></div>
 								<div class="number">编号: <span class="node-id">1</span></div>
@@ -422,8 +422,6 @@
 
 	<script type="text/javascript">
 
-		console.log(window.orientation)
-
 		function orientationChange(){ 
 			switch(window.orientation) { 
 				case 0:
@@ -444,6 +442,73 @@
 		window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", orientationChange, false);
 
 	</script>
+	<script type="text/javascript">
+		/*GA*/
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-84670612-2', 'auto');
+		ga('send', 'pageview');
 
+		/*baidu*/
+		var _hmt = _hmt || [];
+		(function(){
+			var hm = document.createElement("script");
+			hm.src = "//hm.baidu.com/hm.js?2c8a2f9b34a5678408d51602b825888f";
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(hm, s);
+		})();
+		function trackEvent(a,b,c){
+			try{
+				if(c){
+					ga('send','event',a,b,c);
+				}else{
+					ga('send','event',a,b);
+				}
+			}catch(e){
+				console.log(e);
+			}
+			try{
+				if(c){
+					_hmt.push(['_trackEvent',a,b,c]);
+				}else{
+					_hmt.push(['_trackEvent',a,b]);
+				}
+			}catch(e){
+				console.log(e);
+			}
+		}
+		$('.page1 .slide_btn').on('click',function(){
+			trackEvent('home','next1');
+		});
+		$('.rule-btn').on('click',function(){
+			trackEvent('home','explain');
+		});
+		$('.btn-close').on('click',function(){
+			trackEvent('explain','back1');
+		});
+		$('.page2 .slide_btn').on('click',function(){
+			trackEvent('review','next2');
+		});
+		$('.btn-confirm').on('click',function(){
+			trackEvent('rule','agree');
+		});
+		$('.btn-back').on('click',function(){
+			trackEvent('rule','back2');
+		});
+		$('.rank-btn').on('click',function(){
+			trackEvent('list','ranking');
+		});
+		$('.btn-back-list').on('click',function(){
+			trackEvent('ranking','back3');
+		});
+		$('.page5 .btn-back-choose').on('click',function(){
+			trackEvent('detail','reselect');
+		});
+		$('.page6 .btn-back-choose').on('click',function(){
+			trackEvent('form','rechoose');
+		});
+		$('.share-btn').on('click',function(){
+			trackEvent('succeed','share');
+		});
+	</script>
 </body>
 </html>
