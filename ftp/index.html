@@ -1,0 +1,459 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta content="yes" name="apple-mobile-web-app-capable" />
+	<meta content="yes" name="apple-touch-fullscreen" />
+	<meta content="telephone=no,email=no" name="format-detection" />
+	<script type="text/javascript">
+		function queryString(str){
+			var sValue=location.search.match(new RegExp("[\?\&]"+str+"=([^\&]*)(\&?)","i"));
+			return sValue?sValue[1]:sValue;
+		}
+		if(!queryString('openid')){
+			window.location.href = "http://sovita.dzhcn.cn/wechat_api/get_openid.php?backurl="+window.location.origin+window.location.pathname;
+		}
+	</script>
+	<script type="text/javascript" src="js/flexible.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="css/animate.css">
+	<link rel="stylesheet" type="text/css" href="css/swiper.min.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<title>Honda</title>
+</head>
+<body>
+
+	<div id="tips"><img src="images/tip.png"></div>
+
+	<div class="page-container">
+		<div class="masker stop-swiping"></div>
+		<div class="rules rule-wrap stop-swiping">
+			<div class="rule-content">
+				<h2><img src="images/rules_tit.png" /></h2>
+				<div class="text">
+					<p>1. 本次投票活动参赛作品不分组别，每辆参赛车均有唯一编号（编号为电脑随机生成）；</p>
+					<p>2. 评选活动持续三天，前后分两轮，分别为全体进10，和10进1；</p>
+					<p>3. 第一轮 全体进10（投票评选）<br />
+					● 投票时间：2016年10月28日9:00至10月29日17:00<br />
+					● 每位用户每天限一次投票机会，每次必须选投三件作品<br />
+					● 根据投票数先后，从全体参评车辆中竞选出前10名<br />（投票页面附有排行榜按钮，点击可查看前10名作品）</p>
+					<p>4. 第二轮 10进1（专家评选）<br />
+					● 评选时间：2016年10月30日9:00至14:00<br />
+					● 由本田中国指定的专家评选委员会进行评选</p>
+					<p>5. 用户在投票成功后，系统将自动发送兑奖码至用户手机，活动最后，现场大屏幕将随机抽选6名幸运者，用户以兑奖码为唯一领奖凭证，与现场工作人员联系领奖</p>
+					<p>6. 本次活动最终解释权归Honda中国节能竞技大赛组委会所有</p>
+				</div>
+				<div class="btn-close sound-btn"><img src="images/btn_back.png" /></div>
+			</div>
+			<div class="rule-light-1">
+				<div class="lights cf">
+					<div class="light light1"></div>
+					<div class="light light2"></div>
+					<div class="light light3"></div>
+					<div class="light light4"></div>
+					<div class="light light5"></div>
+					<div class="light light6"></div>
+					<div class="light light7"></div>
+					<div class="light light8"></div>
+				</div>
+			</div>
+			<div class="rule-light-2 stretch"></div>
+			<div class="rule-bg"><img src="images/rules_bg.png" /></div>
+		</div>
+		<div class="row btn-voice" id="btn-voice"><div class="img-wrap"><img src="images/icon_voice.png" /></div></div>
+		<div class="swiper-container swiper-main">
+			<div class="swiper-wrapper view-list">
+				<div class="swiper-slide page page1 show">
+					<div class="content">
+						<div class="row logo"><img src="images/logo.png" /></div>
+						<div class="row logo-right"><img src="images/logo_right.png" /></div>
+						<div class="row row-level-1 animate fast" data-animate="fadeIn"><img src="images/view_item1_1.png" /></div>
+						<div class="row row-level-2 animate fast" data-animate="slideInUp"><img src="images/view_item1_2.png" /></div>
+						<div class="row row-level-3"><img src="images/view_item1_3.png" /></div>
+						<div class="row row-level-4-1">
+							<div class="row row-level-4 animate delay1" data-animate="heightStretch"><img src="images/view_item1_4.png" /></div>
+						</div>
+						<div class="row row-level-5 animate delay0_25" data-animate="fadeIn"><img src="images/view_item1_5.png" /></div>
+						<div class="row row-level-6 animate delay0_5" data-animate="slideInRight"><img src="images/view_item1_6.png" /></div>
+						<div class="row row-level-7 animate delay0_75" data-animate="slideInRT"><img src="images/view_item1_7.png" /></div>
+						<div class="row row-level-8 animate delay1" data-animate="slideInRT"><img src="images/view_item1_8.png" /></div>
+						<div class="row row-level-9 animate delay1_25" data-animate="slideInLD"><img src="images/view_item1_9.png" /></div>
+						<div class="row row-level-10 animate delay1_5" data-animate="slideInLD"><img class="shakeI" src="images/view_item1_10.png" /></div>
+						<div class="row row-level-11 animate delay2" data-animate="fadeIn"><div class="slide_btn delay2"><p><span></span></p></div></div>
+						<div class="row row-level-12 animate delay2" data-animate="fadeIn"><img class="rule-btn sound-btn" src="images/icon_rule.png" /></div>
+					</div>
+				</div>
+				<div class="swiper-slide page page2">
+					<div class="row row-level-1"><img src="images/view_item2_1.jpg" /></div>
+					<div class="row row-level-2 animate" data-animate="fadeInUp"><img src="images/view_item2_2.png" /></div>
+					<div class="row row-level-3 animate delay1" data-animate="fadeIn"><img src="images/view_item2_3.png" /></div>
+					<div class="row row-level-4 animate" data-animate="fadeIn"><img src="images/view_item2_4.png" /></div>
+					<div class="row row-level-5">
+						<div class="text">
+							<div class="animate delay0_5" data-animate="fadeInUp"><img src="images/view_item2_text_01.png" /></div>
+							<div class="animate delay0_75" data-animate="fadeInUp"><img src="images/view_item2_text_02.png" /></div>
+							<div class="animate delay1" data-animate="fadeInUp"><img src="images/view_item2_text_03.png" /></div>
+							<div class="animate delay1_25" data-animate="fadeInUp"><img src="images/view_item2_text_04.png" /></div>
+							<div class="animate delay1_5" data-animate="fadeInUp"><img src="images/view_item2_text_05.png" /></div>
+						</div>
+					</div>
+					<div class="row row-level-6 animate delay2" data-animate="fadeIn"><div class="slide_btn delay2"><p><span></span></p></div></div>
+					<div class="row row-level-7 row-rule">
+						<div class="row-masker"></div>
+						<div class="rule-wrap" data-animate="fadeIn">
+							<div class="rule-content">
+								<h2><img src="images/rules2_tit.png" /></h2>
+								<div class="text">
+									<p>对150辆参赛作品进行网络投票，投票分两轮：</p>
+									<p>● 第一轮 153进10</p>
+									<p>（ 时间：2016年10月28日9:00至10月29日17:00 ）</p>
+									<p>每人每天限投1次，每次必须在150件作品中选投3件</p>
+									<p>● 本次活动最终解释权归Honda中国节能竞技大赛<br />组委会所有</p>
+									<p>欢迎参加本届大赛“最佳设计奖“投票评选活动</p>
+									<p>活动日期：2016年10月28日9:00至10月30日14:00截止；</p>
+								</div>
+								<div class="btn-confirm sound-btn"><img src="images/btn_confirm.png" /></div>
+								<div class="btn-back sound-btn"><img src="images/btn_back.png" /></div>
+							</div>
+							<div class="rule-light-1">
+								<div class="lights cf">
+									<div class="light light1"></div>
+									<div class="light light2"></div>
+									<div class="light light3"></div>
+									<div class="light light4"></div>
+									<div class="light light5"></div>
+									<div class="light light6"></div>
+									<div class="light light7"></div>
+									<div class="light light8"></div>
+								</div>
+							</div>
+							<div class="rule-light-2 stretch"></div>
+							<div class="rule-bg"><img src="images/rules_bg.png" /></div>
+						</div>
+					</div>
+				</div>
+				<div class="swiper-slide page page-list page-board page3">
+					<div class="row row-level-1"><img src="images/view_item2_1.jpg" /></div>
+					<div class="row row-level-2 animate fast" data-animate="fadeIn"></div>
+					<div class="row row-level-3 animate" data-animate="fadeIn"><img src="images/view_item4_2.png" /></div>
+					<div class="row row-level-4 animate delay0_5" data-animate="bounceInLeft"><img src="images/g_left.png" /></div>
+					<div class="row row-level-5 animate delay0_5" data-animate="bounceInLeft"><img src="images/g_left.png" /></div>
+					<div class="row row-level-6 animate" data-animate="fadeIn"><img src="images/view_item4_4.png" /></div>
+					<div class="row row-level-7 animate" data-animate="fadeIn">
+						<div class="shadow rotate1"><img src="images/view_item4_5_shadow.png" /></div>
+						<div class="rotate rotate1"><img src="images/view_item4_5.png" /></div>
+					</div>
+					<div class="row row-level-8 animate" data-animate="fadeIn">
+						<div class="shadow rotate1"><img src="images/view_item4_5_shadow.png" /></div>
+						<div class="rotate rotate1"><img src="images/view_item4_5.png" /></div>
+					</div>
+					<div class="row row-level-9 animate" data-animate="fadeIn">
+						<div class="shadow rotate3"><img src="images/view_item4_6_shadow.png" /></div>
+						<div class="rotate rotate3"><img src="images/view_item4_6.png" /></div>
+					</div>
+					<div class="row row-level-10 animate delay0_5" data-animate="bounceInLeft">
+						<div class="rule-light-1">
+							<div class="lights cf">
+								<div class="light light1"></div>
+								<div class="light light2"></div>
+								<div class="light light3"></div>
+								<div class="light light4"></div>
+								<div class="light light5"></div>
+								<div class="light light6"></div>
+								<div class="light light7"></div>
+								<div class="light light8"></div>
+							</div>
+						</div>
+						<div class="rule-light-2 stretch"></div>
+						<div class="tl-light">
+							<div class="lights cf">
+								<div class="light light1"><img src="images/icon_light1_1.png" /></div>
+								<div class="light light2"><img src="images/icon_light1_2.png" /></div>
+								<div class="light light3"><img src="images/icon_light1_3.png" /></div>
+							</div>
+						</div>
+						<div class="rank-btn sound-btn"><img src="images/icon_btn_3.png" /></div>
+						<div class="scroll-wrap works-wrap">
+							<div class="scroll-container scroll-container-1">
+								<!-- <div class="swiper-wrapper">
+									<div class="swiper-slide">
+										<ul class="pd-list works-list pd-list-1"></ul>
+									</div>
+								</div> -->
+
+								<ul class="swiper-wrapper pd-list works-list pd-list-1" id="leftSlideBlock">
+									
+								</ul>
+
+								<div class="swiper-scrollbar swiper-scrollbar-01"></div>
+							</div>
+							<div class="scroll-container scroll-container-3">
+								<!-- <div class="swiper-wrapper">
+									<div class="swiper-slide">
+										<ul class="pd-list works-list pd-list-2"></ul>
+									</div>
+								</div> -->
+								
+								<ul class="swiper-wrapper pd-list works-list pd-list-2" id="rightSlideBlock">
+									
+								</ul>
+
+								<div class="swiper-scrollbar swiper-scrollbar-02"></div>
+							</div>
+						</div>
+						<div class="btn-submit sound-btn"><img src="images/btn_submit.png" /></div>
+						<div><img src="images/view_item4_7.png" /></div>
+					</div>
+				</div>
+				<div class="swiper-slide page page-list page-board page4">
+					<div class="row row-level-1"><img src="images/view_item2_1.jpg" /></div>
+					<div class="row row-level-2 animate fast" data-animate="fadeIn"></div>
+					<div class="row row-level-3 animate" data-animate="fadeIn"><img src="images/view_item4_2.png" /></div>
+					<div class="row row-level-4 animate delay0_5" data-animate="bounceInLeft"><img src="images/g_left.png" /></div>
+					<div class="row row-level-5 animate delay0_5" data-animate="bounceInLeft"><img src="images/g_left.png" /></div>
+					<div class="row row-level-6 animate" data-animate="fadeIn"><img src="images/view_item4_4.png" /></div>
+					<div class="row row-level-7 animate" data-animate="fadeIn">
+						<div class="shadow rotate1"><img src="images/view_item4_5_shadow.png" /></div>
+						<div class="rotate rotate1"><img src="images/view_item4_5.png" /></div>
+					</div>
+					<div class="row row-level-8 animate" data-animate="fadeIn">
+						<div class="shadow rotate1"><img src="images/view_item4_5_shadow.png" /></div>
+						<div class="rotate rotate1"><img src="images/view_item4_5.png" /></div>
+					</div>
+					<div class="row row-level-9 animate" data-animate="fadeIn">
+						<div class="shadow rotate3"><img src="images/view_item4_6_shadow.png" /></div>
+						<div class="rotate rotate3"><img src="images/view_item4_6.png" /></div>
+					</div>
+					<div class="row row-level-10 animate delay0_5" data-animate="bounceInLeft">
+						<div class="rule-light-1">
+							<div class="lights cf">
+								<div class="light light1"></div>
+								<div class="light light2"></div>
+								<div class="light light3"></div>
+								<div class="light light4"></div>
+								<div class="light light5"></div>
+								<div class="light light6"></div>
+								<div class="light light7"></div>
+								<div class="light light8"></div>
+							</div>
+						</div>
+						<div class="rule-light-2 stretch"></div>
+						<div class="tl-light">
+							<div class="lights cf">
+								<div class="light light1"><img src="images/icon_light1_1.png" /></div>
+								<div class="light light2"><img src="images/icon_light1_2.png" /></div>
+								<div class="light light3"><img src="images/icon_light1_3.png" /></div>
+							</div>
+						</div>
+						<div class="btn-back-list sound-btn"><img src="images/btn_back_2.png" /></div>
+						<div class="tit"><img src="images/view_item6_1.png" /></div>
+						<div class="scroll-wrap leader-board-wrap">
+							<div class="scroll-container scroll-container-2">
+								<div class="swiper-wrapper">
+									<div class="swiper-slide">
+										<ul class="pd-list leader-board"></ul>
+									</div>
+								</div>
+								<div class="swiper-scrollbar"></div>
+							</div>
+						</div>
+						<div><img src="images/view_item4_7.png" /></div>
+					</div>
+				</div>
+				<div class="swiper-slide page page-list page-board page5 stop-swiping">
+					<div class="row row-level-2 animate fast" data-animate="fadeIn"></div>
+					<div class="row board">
+						<div class="g_top g_top_1 animate" data-animate="bounceInDown"><img src="images/g_top.png" /></div>
+						<div class="g_top g_top_2 animate" data-animate="bounceInDown"><img src="images/g_top.png" /></div>
+						<div class="g_right g_right_1 animate" data-animate="bounceInRight"><img src="images/g_right.png" /></div>
+						<div class="g_right g_right_2 animate" data-animate="bounceInRight"><img src="images/g_right.png" /></div>
+						<div class="g_bottom g_bottom_1 animate" data-animate="bounceInUp"><img src="images/g_bottom.png" /></div>
+						<div class="g_bottom g_bottom_2 animate" data-animate="bounceInUp"><img src="images/g_bottom.png" /></div>
+						<div class="g_left g_left_1 animate" data-animate="bounceInLeft"><img src="images/g_left.png" /></div>
+						<div class="g_left g_left_2 animate" data-animate="bounceInLeft"><img src="images/g_left.png" /></div>
+						<div class="row row-level-7 animate" data-animate="fadeIn">
+							<div class="shadow rotate1"><img src="images/view_item4_5_shadow.png" /></div>
+							<div class="rotate rotate1"><img src="images/view_item4_5.png" /></div>
+						</div>
+						<div class="row row-level-8 animate" data-animate="fadeIn">
+							<div class="shadow rotate1"><img src="images/view_item4_5_shadow.png" /></div>
+							<div class="rotate rotate1"><img src="images/view_item4_5.png" /></div>
+						</div>
+						<div class="row row-level-9 animate" data-animate="fadeIn">
+							<div class="shadow rotate3"><img src="images/view_item4_6_shadow.png" /></div>
+							<div class="rotate rotate3"><img src="images/view_item4_6.png" /></div>
+						</div>
+						<div class="btn-back-choose animate sound-btn" data-animate="bounceInUp"><img src="images/btn_cx.png" /></div>
+						<div class="btn-start-vote animate sound-btn" data-animate="bounceInUp"><img src="images/btn_tp.png" /></div>
+						<div class="animate delay0_5" data-animate="bounceIn">
+							<div class="works-node">
+								<div class="pd-img">
+									<div class="img-cover img2-cover"><img src="images/img2_cover.png" /></div>
+									<div class="img"><img class="node-img" src="images/works_1.jpg" /></div>
+								</div>
+								<div class="dis"><span class="node-dis">群英聚会，比学赶帮，争创一流； 相互学习，加强交流，共同提高。</span></div>
+								<div class="number">编号: <span class="node-id">1</span></div>
+								<div class="vote">票数: <span class="node-vote">1234</span>张</div>
+							</div>
+							<div class="bg"><img src="images/bg_pd.png" /></div>
+						</div>
+					</div>
+				</div>
+				<div class="swiper-slide page page-list page-board page6 stop-swiping">
+					<div class="row row-level-1"><img src="images/view_item2_1.jpg" /></div>
+					<div class="row row-level-2 animate fast" data-animate="fadeIn"></div>
+					<div class="row row-level-3 animate" data-animate="fadeIn"><img src="images/view_item4_2.png" /></div>
+					<div class="row row-level-4 animate delay0_5" data-animate="bounceInLeft"><img src="images/g_left.png" /></div>
+					<div class="row row-level-5 animate delay0_5" data-animate="bounceInLeft"><img src="images/g_left.png" /></div>
+					<div class="row row-level-6 animate" data-animate="fadeIn"><img src="images/view_item4_4.png" /></div>
+					<div class="row row-level-7 animate" data-animate="fadeIn">
+						<div class="shadow rotate1"><img src="images/view_item4_5_shadow.png" /></div>
+						<div class="rotate rotate1"><img src="images/view_item4_5.png" /></div>
+					</div>
+					<div class="row row-level-8 animate" data-animate="fadeIn">
+						<div class="shadow rotate1"><img src="images/view_item4_5_shadow.png" /></div>
+						<div class="rotate rotate1"><img src="images/view_item4_5.png" /></div>
+					</div>
+					<div class="row row-level-9 animate" data-animate="fadeIn">
+						<div class="shadow rotate3"><img src="images/view_item4_6_shadow.png" /></div>
+						<div class="rotate rotate3"><img src="images/view_item4_6.png" /></div>
+					</div>
+					<div class="row row-level-10 animate delay0_5" data-animate="bounceInLeft">
+						<div class="rule-light-1">
+							<div class="lights cf">
+								<div class="light light1"></div>
+								<div class="light light2"></div>
+								<div class="light light3"></div>
+								<div class="light light4"></div>
+								<div class="light light5"></div>
+								<div class="light light6"></div>
+								<div class="light light7"></div>
+								<div class="light light8"></div>
+							</div>
+						</div>
+						<div class="rule-light-2 stretch"></div>
+						<div class="tl-light">
+							<div class="lights cf">
+								<div class="light light1"><img src="images/icon_light1_1.png" /></div>
+								<div class="light light2"><img src="images/icon_light1_2.png" /></div>
+								<div class="light light3"><img src="images/icon_light1_3.png" /></div>
+							</div>
+						</div>
+						<ul class="pd-list works-list pd-list-3">
+							<li><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="images/works_1.jpg"></div></div></li>
+							<li><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="images/works_1.jpg"></div></div></li>
+							<li><div class="img-wrap"><div class="img-cover"></div><div class="img"><img src="images/works_1.jpg"></div></div></li>
+						</ul>
+						<input type="text" id="mobile" class="mobile" />
+						<input type="text" id="sms" class="sms" />
+						<div class="btn_getsms sound-btn"></div>
+						<div class="btn-back-choose sound-btn"></div>
+						<div class="btn-start-shake sound-btn"></div>
+						<div><img src="images/bg_vote.png" /></div>
+					</div>
+				</div>
+				<div class="swiper-slide page page-list page-board page7 stop-swiping">
+					<div class="row row-level-2 animate fast" data-animate="fadeIn"></div>
+					<div class="row board">
+						<div class="g_top g_top_1 animate" data-animate="bounceInDown"><img src="images/g_top.png" /></div>
+						<div class="g_top g_top_2 animate" data-animate="bounceInDown"><img src="images/g_top.png" /></div>
+						<div class="g_right g_right_1 animate" data-animate="bounceInRight"><img src="images/g_right.png" /></div>
+						<div class="g_right g_right_2 animate" data-animate="bounceInRight"><img src="images/g_right.png" /></div>
+						<div class="g_bottom g_bottom_1 animate" data-animate="bounceInUp"><img src="images/g_bottom.png" /></div>
+						<div class="g_bottom g_bottom_2 animate" data-animate="bounceInUp"><img src="images/g_bottom.png" /></div>
+						<div class="g_left g_left_1 animate" data-animate="bounceInLeft"><img src="images/g_left.png" /></div>
+						<div class="g_left g_left_2 animate" data-animate="bounceInLeft"><img src="images/g_left.png" /></div>
+						<div class="row row-level-7 animate" data-animate="fadeIn">
+							<div class="shadow rotate1"><img src="images/view_item4_5_shadow.png" /></div>
+							<div class="rotate rotate1"><img src="images/view_item4_5.png" /></div>
+						</div>
+						<div class="row row-level-8 animate" data-animate="fadeIn">
+							<div class="shadow rotate1"><img src="images/view_item4_5_shadow.png" /></div>
+							<div class="rotate rotate1"><img src="images/view_item4_5.png" /></div>
+						</div>
+						<div class="row row-level-9 animate" data-animate="fadeIn">
+							<div class="shadow rotate3"><img src="images/view_item4_6_shadow.png" /></div>
+							<div class="rotate rotate3"><img src="images/view_item4_6.png" /></div>
+						</div>
+						<div class="animate delay0_5" data-animate="bounceIn">
+							<div class="ss"><img src="images/vote_success.png" /></div>
+							<div class="ss_code">123123</div>
+							<div class="share-btn sound-btn"><img src="images/view_item8_6.png" /></div>
+							<div class="bg"><img src="images/bg_pd.png" /></div>
+						</div>
+					</div>
+					<div class="row share-cover">
+						<div class="inner">
+							<div class="tl-light">
+								<div class="lights cf">
+									<div class="light light1"><img src="images/icon_light1_1.png" /></div>
+									<div class="light light2"><img src="images/icon_light1_2.png" /></div>
+									<div class="light light3"><img src="images/icon_light1_3.png" /></div>
+								</div>
+							</div>
+							<div class="tr-light">
+								<div class="lights cf">
+									<div class="light light4"><img src="images/icon_light2_1.png" /></div>
+									<div class="light light5"><img src="images/icon_light2_2.png" /></div>
+									<div class="light light6"><img src="images/icon_light2_3.png" /></div>
+								</div>
+							</div>
+							<div class="rule-light-1">
+								<div class="lights cf">
+									<div class="light light1"></div>
+									<div class="light light2"></div>
+									<div class="light light3"></div>
+									<div class="light light4"></div>
+									<div class="light light5"></div>
+									<div class="light light6"></div>
+									<div class="light light7"></div>
+									<div class="light light8"></div>
+								</div>
+							</div>
+							<div class="rule-light-2 stretch"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<audio style="display:none;" class="audio" loop="loop" id="bgm" controls="controls" src="media/bgm.mp3" ></audio>
+	<audio style="display:none;" class="audio" id="button" controls="controls" src="media/button.mp3" ></audio>
+	<audio style="display:none;" class="audio" id="impact" controls="controls" src="media/impact.mp3" ></audio>
+	<audio style="display:none;" class="audio" loop="loop" id="gear" controls="controls" src="media/gear.mp3" ></audio>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script type="text/javascript" src="js/preloadjs.min.js"></script>
+	<script type="text/javascript" src="js/swiper.min.js"></script>
+	<script type="text/javascript" src="js/data.js"></script>
+	<script type="text/javascript" src="js/underscore.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+
+	<script type="text/javascript">
+
+		console.log(window.orientation)
+
+		function orientationChange(){ 
+			switch(window.orientation) { 
+				case 0:
+					$("#tips").hide();
+					break; 
+				case 180: // Upside-down Portrait 
+					$("#tips").hide();
+					break; 
+					
+				case -90: // Landscape: turned 90 degrees counter-clockwise 
+					$("#tips").show();
+					break; 
+				case 90: // Landscape: turned 90 degrees clockwise 
+					$("#tips").show();
+					break; 
+			} 
+		} 
+		window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", orientationChange, false);
+
+	</script>
+
+</body>
+</html>
