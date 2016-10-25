@@ -257,18 +257,38 @@ $(function(){
 				}
 				
 				if(e.activeIndex === 2){
-					// works_vote.listAjax.complete(function(){
-					// 	$('.works-wrap .scroll-container').each(function(){
-					// 		new Swiper(this,{
-					// 			scrollbar: $(this).find('.swiper-scrollbar'),
-					// 			scrollbarHide: false,
-					// 			direction: 'vertical',
-					// 			slidesPerView: 'auto',
-					// 			mousewheelControl: true,
-					// 			freeMode: true
-					// 		});
-					// 	});
-					// });
+					works_vote.listAjax.complete(function(){
+						var h = $(".works-wrap").eq(0).height();
+
+						$(".scroll-container-1, .scroll-container-3").height(h)
+						$("#leftSlideBlock, #rightSlideBlock").height(h)
+
+						var ua = navigator.userAgent.toLowerCase();	
+
+						setTimeout(function(){
+							if (/iphone|ipad|ipod/.test(ua)) {
+								$('.works-wrap .scroll-container').each(function(index,item){
+									var self = this;
+									new Swiper($(self),{
+										scrollbar: $(self).find('.swiper-scrollbar'),
+										scrollbarHide: false,
+										direction: 'vertical',
+										slidesPerView: 'auto',
+										freeMode: true
+									});
+								});
+							}else{
+								$('.works-wrap .scroll-container').each(function(index,item){
+									var self = this;
+									new Swiper($(self),{
+										direction: 'vertical',
+										slidesPerView:3
+									});
+								});
+							}
+
+						}, 1000)
+					});
 				}
 				if(e.activeIndex === 3){
 					works_vote.boardAjax.complete(function(){
@@ -397,7 +417,7 @@ $(function(){
 		this.listWraps = $('.works-wrap .works-list');
 		this.boardWrap = $('.leader-board');
 		this.checkedNum = 0;
-		this.activeNode = this.list[0];
+		this.activeNode = null;
 		this.selectNode = [];
 		this.setWorksList();
 	};
@@ -495,9 +515,6 @@ $(function(){
 								trackEvent('list','d',item.id);
 								event.stopPropagation();
 							});
-							if(index === 0){
-								self.activeNode = item;
-							}
 							li.appendTo(self.boardWrap);
 						});
 					}else{
@@ -523,7 +540,7 @@ $(function(){
 						var oilArr = data.data;
 						var ind = 0;
 						$(oilArr).each(function(index,item){
-							var li = $('<li data-id="'+item.id+'" data-name="'+item.name+'"><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img" style="background-image:url(images/'+item.id+'.jpg)"></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
+							var li = $('<li class="swiper-slide" data-id="'+item.id+'" data-name="'+item.name+'"><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img" style="background-image:url(images/'+item.id+'.jpg)"></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
 							li.on('click',function(event){
 								self.activeNode = item;
 								myPageSwiper.unlockSwipeToNext();
@@ -550,36 +567,7 @@ $(function(){
 							
 						});
 
-						var h = $(".works-wrap").eq(0).height();
-
-						$(".scroll-container-1, .scroll-container-3").height(h)
-						$("#leftSlideBlock, #rightSlideBlock").height(h)
-
-						var ua = navigator.userAgent.toLowerCase();	
-
-						setTimeout(function(){
-							if (/iphone|ipad|ipod/.test(ua)) {
-								$('.works-wrap .scroll-container').each(function(index,item){
-									var self = this;
-									new Swiper($(self),{
-										scrollbar: $(self).find('.swiper-scrollbar'),
-										scrollbarHide: false,
-										direction: 'vertical',
-										slidesPerView: 'auto',
-										freeMode: true
-									});
-								});
-							}else{
-								$('.works-wrap .scroll-container').each(function(index,item){
-									var self = this;
-									new Swiper($(self),{
-										direction: 'vertical',
-										slidesPerView:3
-									});
-								});
-							}
-
-						}, 3000)
+						
 						
 						self.setWorksNode();
 					}
@@ -597,34 +585,36 @@ $(function(){
 		},
 		setWorksNode: function(){
 			var self = this;
-			var node = self.activeNode ;
-			$('.works-node .node-img').css('backgroundImage','url(images/'+node.id+'.jpg)');
-			$('.works-node .node-id').text(node.id);
-			$('.works-node .node-dis').text(node.des);
-			$('.works-node .node-vote').text(node.vote);
-			$('.works-node .pd-img').off('click').on('click',function(event){
-				// pop.show($('<div class="img-wrap"><img src="'+node.img+'" /></div>'));
-				pop.show($('<div class="img-wrap"><div style="background-image:url('+node.img+')"></div></div>'));
-				event.stopPropagation();
-			})
+			var node = self.activeNode;
+			if(node){
+				$('.works-node .node-img').css('backgroundImage','url(images/'+node.id+'.jpg)');
+				$('.works-node .node-id').text(node.id);
+				$('.works-node .node-dis').text(node.des);
+				$('.works-node .node-vote').text(node.vote);
+				$('.works-node .pd-img').off('click').on('click',function(event){
+					// pop.show($('<div class="img-wrap"><img src="'+node.img+'" /></div>'));
+					pop.show($('<div class="img-wrap"><div style="background-image:url('+node.img+')"></div></div>'));
+					event.stopPropagation();
+				})
+				$('.btn-start-vote').off('click').on('click',function(event){
+					if(self.checkedNum<3){
+						self.listWraps.find('li:[data-name="'+node.name+'"]').addClass('checked');
+						self.checkedNum++;
+						myPageSwiper.unlockSwipeToNext();
+						myPageSwiper.slideTo(2);
+						trackEvent('detail','vote',node.id);
+					}else{
+						pop.alert('您的选择队伍已满3个');
+					}
+					event.stopPropagation();
+				});
+			}
 			$('.btn-back-choose').off('click').on('click',function(event){
 				myPageSwiper.unlockSwipeToNext();
 				if(myPageSwiper.previousIndex===3){
 					myPageSwiper.slideTo(3);
 				}else{
 					myPageSwiper.slideTo(2);
-				}
-				event.stopPropagation();
-			});
-			$('.btn-start-vote').off('click').on('click',function(event){
-				if(self.checkedNum<3){
-					self.listWraps.find('li:[data-name="'+node.name+'"]').addClass('checked');
-					self.checkedNum++;
-					myPageSwiper.unlockSwipeToNext();
-					myPageSwiper.slideTo(2);
-					trackEvent('detail','vote',node.id);
-				}else{
-					pop.alert('您的选择队伍已满3个');
 				}
 				event.stopPropagation();
 			});
