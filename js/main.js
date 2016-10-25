@@ -287,7 +287,7 @@ $(function(){
 								});
 							}
 
-						}, 1000)
+						}, 100)
 					});
 				}
 				if(e.activeIndex === 3){
@@ -540,7 +540,7 @@ $(function(){
 						var oilArr = data.data;
 						var ind = 0;
 						$(oilArr).each(function(index,item){
-							var li = $('<li class="swiper-slide" data-id="'+item.id+'" data-name="'+item.name+'"><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+(index+1)+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img" style="background-image:url(images/'+item.id+'.jpg)"></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
+							var li = $('<li class="swiper-slide" data-id="'+item.id+'" data-name="'+item.name+'"><div class="checkbox"><div class="icon"></div></div><div class="number">编号:'+item.id+'</div><div class="img-wrap"><div class="img-cover"></div><div class="img" style="background-image:url(images/'+item.id+'.jpg)"></div></div><div class="name">名称: '+item.name+'</div><div class="dis">加油量: '+item.vote+'ml</div></li>');
 							li.on('click',function(event){
 								self.activeNode = item;
 								myPageSwiper.unlockSwipeToNext();
@@ -567,8 +567,6 @@ $(function(){
 							
 						});
 
-						
-						
 						self.setWorksNode();
 					}
 				}
@@ -593,7 +591,7 @@ $(function(){
 				$('.works-node .node-vote').text(node.vote);
 				$('.works-node .pd-img').off('click').on('click',function(event){
 					// pop.show($('<div class="img-wrap"><img src="'+node.img+'" /></div>'));
-					pop.show($('<div class="img-wrap"><div style="background-image:url('+node.img+')"></div></div>'));
+					pop.show($('<div class="img-wrap"><div style="background-image:url(images/'+node.id+'.jpg)"></div></div>'));
 					event.stopPropagation();
 				})
 				$('.btn-start-vote').off('click').on('click',function(event){
