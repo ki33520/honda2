@@ -506,15 +506,15 @@ $(function(){
 						var list_data = data.data;
 						self.boardWrap.empty();
 						$(list_data).each(function(index,item){
-							var li = $('<li><div class="item rank">'+item.rowno+'</div><div class="item item-right"><div class="img-wrap"><div class="img-cover"></div><div class="img" style="background-image:url(images/'+item.id+'.jpg)"></div></div><div class="text"><div class="name">名称: '+item.Name+'</div><div class="dis">加油量: '+item.vote+'ml</div></div></div></li>');
-							li.on('click',function(){
-								self.activeNode = item;
-								console.log(self.activeNode)
-								myPageSwiper.unlockSwipeToNext();
-								myPageSwiper.slideTo(4);
-								trackEvent('list','d',item.id);
-								event.stopPropagation();
-							});
+							var li = $('<li class="cf"><div class="item rank">'+item.rowno+'</div><div class="item item-right"><div class="img-wrap"><div class="img-cover"></div><div class="img" style="background-image:url(images/'+item.id+'.jpg)"></div></div><div class="text"><div class="name">名称: '+item.Name+'</div><div class="dis">加油量: '+item.vote+'ml</div></div></div></li>');
+							// li.on('click',function(){
+							// 	self.activeNode = item;
+							// 	console.log(self.activeNode)
+							// 	myPageSwiper.unlockSwipeToNext();
+							// 	myPageSwiper.slideTo(4);
+							// 	trackEvent('list','d',item.id);
+							// 	event.stopPropagation();
+							// });
 							li.appendTo(self.boardWrap);
 						});
 					}else{
